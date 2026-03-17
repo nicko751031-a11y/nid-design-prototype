@@ -79,6 +79,7 @@
         }
         .lang-btn:hover { background: var(--white); color: var(--text); }
 
+        .mobile-lang-btn { display: none; }
         .hamburger { display: none; cursor: pointer; width: 28px; height: 20px; position: relative; }
         .hamburger span {
             display: block; width: 28px; height: 1px; background: var(--white);
@@ -285,6 +286,7 @@
             .nav { display: none; }
             .hamburger { display: block; }
             .mobile-menu { display: flex; }
+            .mobile-lang-btn { display: block !important; }
             .page-banner { height: 35vh; min-height: 260px; }
             .page-banner-title { letter-spacing: 3px; }
             .service-block { grid-template-columns: 1fr; min-height: auto; }
@@ -335,7 +337,7 @@
             </button>
         </nav>
         <div style="display:flex;align-items:center;gap:16px;">
-            <button class="lang-btn mobile-lang-btn" onclick="switchLang()" style="display:none;">
+            <button class="lang-btn mobile-lang-btn" onclick="switchLang()">
                 <span class="zh-only">EN</span><span class="en-only">中文</span>
             </button>
             <div class="hamburger" onclick="toggleMenu()"><span></span></div>

@@ -78,6 +78,7 @@
         }
         .lang-btn:hover { background: var(--text); color: var(--white); }
 
+        .mobile-lang-btn { display: none; }
         .hamburger { display: none; cursor: pointer; width: 28px; height: 20px; position: relative; }
         .hamburger span {
             display: block; width: 28px; height: 1px; background: var(--text);
@@ -396,6 +397,7 @@
             .nav { display: none; }
             .hamburger { display: block; }
             .mobile-menu { display: flex; }
+            .mobile-lang-btn { display: block !important; }
             .back-bar { padding: 18px 24px; margin-top: 64px; }
             .back-link { font-size: 11px; }
             .project-hero { height: 45vh; min-height: 300px; }
@@ -442,7 +444,7 @@
             </button>
         </nav>
         <div style="display:flex;align-items:center;gap:16px;">
-            <button class="lang-btn mobile-lang-btn" onclick="switchLang()" style="display:none;">
+            <button class="lang-btn mobile-lang-btn" onclick="switchLang()">
                 <span class="zh-only">EN</span><span class="en-only">中文</span>
             </button>
             <div class="hamburger" onclick="toggleMenu()"><span></span></div>
