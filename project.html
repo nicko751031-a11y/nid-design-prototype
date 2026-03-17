@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="lang-zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品詳情｜川果設計 NID Design Lab</title>
+    <meta name="description" content="川果設計作品詳情，住宅空間、商業空間室內設計案例。德國iF、美國BOY Award國際獲獎團隊。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500&family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2C2C2C; --secondary: #8C8C8C; --bg: #F5F3F0;
+            --accent: #B8A88A; --text: #1A1A1A; --white: #FFFFFF; --dark: #1A1A1A;
+            --serif-en: 'Cormorant Garamond', serif; --serif-tc: 'Noto Serif TC', serif;
+            --sans-en: 'Inter', sans-serif; --sans-tc: 'Noto Sans TC', sans-serif;
+            --ease: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--sans-tc), var(--sans-en), sans-serif;
+            color: var(--text); background: var(--white); line-height: 1.8;
+            -webkit-font-smoothing: antialiased; overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; transition: var(--ease); }
+        img { max-width: 100%; display: block; }
+
+        /* ===== I18N ===== */
+        .lang-zh .en-only { display: none !important; }
+        .lang-en .zh-only { display: none !important; }
+        .lang-en .project-hero-name,
+        .lang-en .section-title,
+        .lang-en .contact-title,
+        .lang-en .desc-card-title {
+            font-family: var(--serif-en);
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 0 60px; height: 80px;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: var(--ease);
+        }
+        .header.scrolled {
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(20px);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+        }
+        .header.scrolled .logo-img { filter: invert(1); }
+        .header.scrolled .nav-link { color: var(--text); }
+        .header.scrolled .lang-btn { color: var(--text); border-color: var(--text); }
+        .header.scrolled .hamburger span,
+        .header.scrolled .hamburger span::before,
+        .header.scrolled .hamburger span::after { background: var(--text); }
+        .logo-link { display: flex; align-items: center; }
+        .logo-img { height: 88px; width: auto; transition: var(--ease); }
+        .nav { display: flex; align-items: center; gap: 36px; position: absolute; left: 50%; transform: translateX(-50%); }
+        .nav-link {
+            font-family: var(--sans-en); font-size: 11px; font-weight: 400;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: var(--text); position: relative; transition: var(--ease);
+        }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 1px; background: currentColor; transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+        .nav-link.active::after { width: 100%; }
+
+        /* LANG SWITCH */
+        .lang-btn {
+            font-family: var(--sans-en); font-size: 10px; font-weight: 400;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: var(--text); border: 1px solid rgba(26,26,26,0.3);
+            padding: 6px 14px; cursor: pointer; background: transparent;
+            transition: var(--ease); margin-left: 8px;
+        }
+        .lang-btn:hover { background: var(--text); color: var(--white); }
+
+        .hamburger { display: none; cursor: pointer; width: 28px; height: 20px; position: relative; }
+        .hamburger span {
+            display: block; width: 28px; height: 1px; background: var(--text);
+            position: absolute; top: 50%; transition: var(--ease);
+        }
+        .hamburger span::before, .hamburger span::after {
+            content: ''; display: block; width: 28px; height: 1px;
+            background: var(--text); position: absolute; transition: var(--ease);
+        }
+        .hamburger span::before { top: -8px; }
+        .hamburger span::after { top: 8px; }
+
+        /* MOBILE MENU */
+        .mobile-menu {
+            display: none; position: fixed; inset: 0; z-index: 999;
+            background: rgba(26,26,26,0.98); backdrop-filter: blur(20px);
+            flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+        }
+        .mobile-menu.active { opacity: 1; pointer-events: all; }
+        .mobile-menu .nav-link { font-size: 14px; letter-spacing: 4px; color: var(--white); }
+        .mobile-menu .lang-btn { color: var(--white); border-color: rgba(255,255,255,0.5); margin: 0; font-size: 12px; padding: 8px 20px; }
+        .mobile-menu .close-btn {
+            position: absolute; top: 28px; right: 28px; width: 28px; height: 28px; cursor: pointer;
+        }
+        .mobile-menu .close-btn::before, .mobile-menu .close-btn::after {
+            content: ''; position: absolute; width: 24px; height: 1px;
+            background: var(--white); top: 50%; left: 50%;
+        }
+        .mobile-menu .close-btn::before { transform: translate(-50%,-50%) rotate(45deg); }
+        .mobile-menu .close-btn::after { transform: translate(-50%,-50%) rotate(-45deg); }
+
+        /* ===== BACK LINK ===== */
+        .back-bar {
+            padding: 24px 60px;
+            margin-top: 80px;
+            background: var(--white);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        .back-link {
+            font-family: var(--sans-en); font-size: 12px; font-weight: 400;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: var(--secondary);
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .back-link:hover { color: var(--text); }
+        .back-link .arrow-back { transition: transform 0.3s ease; }
+        .back-link:hover .arrow-back { transform: translateX(-4px); }
+
+        /* ===== PROJECT HERO ===== */
+        .project-hero {
+            position: relative; width: 100%; height: 60vh; min-height: 400px;
+            overflow: hidden;
+        }
+        .project-hero-img {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+        }
+        .project-hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 100%);
+            z-index: 1;
+        }
+        .project-hero-content {
+            position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+            padding: 60px;
+            color: var(--white);
+        }
+        .project-hero-category {
+            font-family: var(--sans-en); font-size: 10px; font-weight: 400;
+            letter-spacing: 4px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px;
+        }
+        .project-hero-name {
+            font-family: var(--serif-tc); font-size: clamp(28px, 4vw, 48px);
+            font-weight: 400; letter-spacing: 6px; line-height: 1.3; margin-bottom: 8px;
+        }
+        .project-hero-name-en {
+            font-family: var(--serif-en); font-size: clamp(14px, 1.5vw, 20px);
+            font-weight: 300; letter-spacing: 3px; opacity: 0.8;
+        }
+
+        /* ===== PROJECT INFO BAR ===== */
+        .project-info-bar {
+            padding: 32px 60px;
+            background: var(--white);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+        }
+        .info-tag {
+            font-family: var(--sans-en); font-size: 10px; font-weight: 400;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: var(--secondary);
+            padding: 6px 16px;
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+        .info-tag.award-tag {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: rgba(184,168,138,0.06);
+        }
+
+        /* ===== GALLERY GRID ===== */
+        .gallery-section {
+            padding: 40px 60px 80px;
+            background: var(--white);
+        }
+        .gallery-grid {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+        }
+        .gallery-item {
+            overflow: hidden; cursor: pointer;
+            position: relative;
+        }
+        .gallery-item.full-width {
+            grid-column: 1 / -1;
+        }
+        .gallery-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            aspect-ratio: 3/2;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .gallery-item.full-width img {
+            aspect-ratio: 16/9;
+            max-height: 600px;
+        }
+        .gallery-item:hover img { transform: scale(1.03); }
+        .gallery-item-overlay {
+            position: absolute; inset: 0;
+            background: rgba(26,26,26,0);
+            transition: background 0.4s ease;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .gallery-item:hover .gallery-item-overlay {
+            background: rgba(26,26,26,0.1);
+        }
+        .gallery-expand-icon {
+            width: 44px; height: 44px;
+            border: 1px solid rgba(255,255,255,0.7);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: scale(0.8);
+            transition: var(--ease);
+            color: var(--white);
+        }
+        .gallery-item:hover .gallery-expand-icon {
+            opacity: 1; transform: scale(1);
+        }
+
+        /* ===== DESCRIPTION CARD ===== */
+        .desc-card {
+            background: var(--bg);
+            padding: 48px 40px;
+            display: flex; flex-direction: column; justify-content: center;
+            cursor: default;
+        }
+        .desc-card-label {
+            font-family: var(--sans-en); font-size: 10px; font-weight: 400;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: var(--accent); margin-bottom: 20px;
+        }
+        .desc-card-title {
+            font-family: var(--serif-tc); font-size: 22px;
+            font-weight: 500; letter-spacing: 2px;
+            color: var(--text); margin-bottom: 20px; line-height: 1.6;
+        }
+        .desc-card-text {
+            font-size: 14px; color: var(--secondary);
+            line-height: 2; margin-bottom: 28px;
+        }
+        .desc-card-tags {
+            display: flex; gap: 10px; flex-wrap: wrap;
+        }
+        .desc-tag {
+            font-family: var(--sans-en); font-size: 9px; font-weight: 500;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            color: var(--secondary); background: rgba(0,0,0,0.04);
+            padding: 4px 12px;
+        }
+        .desc-tag.award {
+            color: var(--accent); background: rgba(184,168,138,0.1);
+        }
+
+        /* ===== LIGHTBOX ===== */
+        .lightbox {
+            position: fixed; inset: 0; z-index: 2000;
+            background: rgba(26,26,26,0.95);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox.active { opacity: 1; pointer-events: all; }
+        .lightbox-img-wrap {
+            position: relative;
+            max-width: 90vw; max-height: 85vh;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .lightbox-img {
+            max-width: 90vw; max-height: 85vh;
+            object-fit: contain;
+            transition: opacity 0.25s ease;
+        }
+        .lightbox-close {
+            position: absolute; top: 24px; right: 24px; z-index: 2001;
+            width: 44px; height: 44px; cursor: pointer;
+            background: none; border: none;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .lightbox-close::before, .lightbox-close::after {
+            content: ''; position: absolute;
+            width: 24px; height: 1px; background: rgba(255,255,255,0.7);
+            transition: background 0.3s ease;
+        }
+        .lightbox-close::before { transform: rotate(45deg); }
+        .lightbox-close::after { transform: rotate(-45deg); }
+        .lightbox-close:hover::before, .lightbox-close:hover::after { background: var(--white); }
+
+        .lightbox-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 48px; height: 48px; cursor: pointer;
+            background: none; border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(255,255,255,0.7);
+            transition: var(--ease); z-index: 2001;
+        }
+        .lightbox-nav:hover {
+            border-color: rgba(255,255,255,0.6);
+            color: var(--white);
+            background: rgba(255,255,255,0.05);
+        }
+        .lightbox-prev { left: 24px; }
+        .lightbox-next { right: 24px; }
+        .lightbox-counter {
+            position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+            font-family: var(--sans-en); font-size: 13px; font-weight: 300;
+            letter-spacing: 3px; color: rgba(255,255,255,0.5); z-index: 2001;
+        }
+
+        /* ===== PROJECT NAV ===== */
+        .project-nav {
+            display: grid; grid-template-columns: 1fr 1fr;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+        .project-nav-link {
+            padding: 60px;
+            display: flex; flex-direction: column; gap: 10px;
+            transition: var(--ease);
+            position: relative;
+        }
+        .project-nav-link:first-child {
+            border-right: 1px solid rgba(0,0,0,0.06);
+        }
+        .project-nav-link:hover { background: var(--bg); }
+        .project-nav-dir {
+            font-family: var(--sans-en); font-size: 10px; font-weight: 400;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: var(--secondary);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .project-nav-name {
+            font-family: var(--serif-tc); font-size: 18px;
+            font-weight: 500; letter-spacing: 2px; color: var(--text);
+        }
+        .project-nav-name-en {
+            font-family: var(--serif-en); font-size: 14px;
+            font-weight: 300; letter-spacing: 1px; color: var(--secondary);
+        }
+        .project-nav-link.next { text-align: right; align-items: flex-end; }
+
+        /* ===== CONTACT CTA ===== */
+        .contact-cta { padding: 160px 60px; background: var(--primary); text-align: center; }
+        .contact-cta-inner { max-width: 600px; margin: 0 auto; }
+        .contact-cta .section-label { color: rgba(255,255,255,0.5); }
+        .section-label {
+            font-family: var(--sans-en); font-size: 10px;
+            letter-spacing: 4px; text-transform: uppercase; color: var(--secondary); margin-bottom: 16px;
+        }
+        .contact-title {
+            font-family: var(--serif-tc); font-size: clamp(28px, 3.5vw, 42px);
+            font-weight: 400; letter-spacing: 6px; color: var(--white); margin-bottom: 20px;
+        }
+        .contact-desc { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 2; margin-bottom: 50px; }
+        .contact-btn {
+            display: inline-flex; align-items: center; gap: 12px;
+            font-family: var(--sans-en); font-size: 12px;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: var(--white); border: 1px solid rgba(255,255,255,0.4);
+            padding: 16px 40px; transition: var(--ease);
+        }
+        .contact-btn:hover { background: var(--white); color: var(--text); }
+        .contact-phone { margin-top: 40px; font-family: var(--serif-en); font-size: 22px; font-weight: 300; letter-spacing: 4px; }
+        .contact-phone a { color: rgba(255,255,255,0.4); }
+        .contact-phone a:hover { color: var(--white); }
+
+        /* ===== FOOTER ===== */
+        .footer { padding: 60px; background: var(--dark); color: rgba(255,255,255,0.4); }
+        .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; }
+        .footer-left { display: flex; flex-direction: column; gap: 12px; }
+        .footer-logo-img { height: 80px; width: auto; object-fit: contain; opacity: 0.7; align-self: flex-start; margin-bottom: 8px; }
+        .footer-info { font-size: 13px; line-height: 2.2; color: rgba(255,255,255,0.3); }
+        .footer-right { display: flex; flex-direction: column; align-items: flex-end; gap: 20px; }
+        .footer-social { display: flex; align-items: center; gap: 20px; }
+        .footer-social a { display: inline-flex; align-items: center; color: rgba(255,255,255,0.4); transition: var(--ease); }
+        .footer-social a:hover { color: var(--white); }
+        .footer-social svg { width: 24px; height: 24px; fill: currentColor; }
+        .footer-copyright { font-family: var(--sans-en); font-size: 11px; letter-spacing: 1px; color: rgba(255,255,255,0.2); }
+
+        /* ===== UTILS ===== */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header { padding: 0 24px; height: 64px; }
+            .logo-img { height: 72px; }
+            .nav { display: none; }
+            .hamburger { display: block; }
+            .mobile-menu { display: flex; }
+            .back-bar { padding: 18px 24px; margin-top: 64px; }
+            .back-link { font-size: 11px; }
+            .project-hero { height: 45vh; min-height: 300px; }
+            .project-hero-content { padding: 32px 24px; }
+            .project-hero-name { letter-spacing: 3px; }
+            .project-info-bar { padding: 20px 24px; gap: 12px; }
+            .info-tag { font-size: 9px; padding: 5px 12px; }
+            .gallery-section { padding: 24px 24px 60px; }
+            .gallery-grid { grid-template-columns: 1fr; gap: 12px; }
+            .gallery-item.full-width img { aspect-ratio: 3/2; max-height: none; }
+            .desc-card { padding: 36px 28px; }
+            .desc-card-title { font-size: 18px; }
+            .lightbox-prev { left: 12px; }
+            .lightbox-next { right: 12px; }
+            .lightbox-nav { width: 40px; height: 40px; }
+            .lightbox-close { top: 16px; right: 16px; }
+            .project-nav { grid-template-columns: 1fr; }
+            .project-nav-link { padding: 36px 24px; }
+            .project-nav-link:first-child { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); }
+            .project-nav-link.next { text-align: left; align-items: flex-start; }
+            .contact-cta { padding: 100px 24px; }
+            .footer { padding: 40px 24px; }
+            .footer-inner { flex-direction: column; gap: 30px; }
+            .footer-right { align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header scrolled" id="header">
+        <a href="index.html" class="logo-link">
+            <img class="logo-img" src="data:image/png;base64,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" alt="川果設計 NID Design Lab">
+        </a>
+        <nav class="nav">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="services.html" class="nav-link">Services</a>
+            <a href="portfolio.html" class="nav-link active">Portfolio</a>
+            <a href="awards.html" class="nav-link">Awards</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+            <button class="lang-btn" onclick="switchLang()">
+                <span class="zh-only">EN</span><span class="en-only">中文</span>
+            </button>
+        </nav>
+        <div style="display:flex;align-items:center;gap:16px;">
+            <button class="lang-btn mobile-lang-btn" onclick="switchLang()" style="display:none;">
+                <span class="zh-only">EN</span><span class="en-only">中文</span>
+            </button>
+            <div class="hamburger" onclick="toggleMenu()"><span></span></div>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="close-btn" onclick="toggleMenu()"></div>
+        <a href="index.html" class="nav-link" onclick="toggleMenu()">Home</a>
+        <a href="about.html" class="nav-link" onclick="toggleMenu()">About</a>
+        <a href="services.html" class="nav-link" onclick="toggleMenu()">Services</a>
+        <a href="portfolio.html" class="nav-link" onclick="toggleMenu()">Portfolio</a>
+        <a href="awards.html" class="nav-link" onclick="toggleMenu()">Awards</a>
+        <a href="contact.html" class="nav-link" onclick="toggleMenu()">Contact</a>
+        <button class="lang-btn" onclick="switchLang(); toggleMenu();">
+            <span class="zh-only">English</span><span class="en-only">中文版</span>
+        </button>
+    </div>
+
+    <!-- BACK LINK -->
+    <div class="back-bar">
+        <a href="portfolio.html" class="back-link">
+            <span class="arrow-back">&larr;</span>
+            <span class="zh-only">返回作品集</span>
+            <span class="en-only">Back to Portfolio</span>
+        </a>
+    </div>
+
+    <!-- PROJECT HERO -->
+    <section class="project-hero" id="projectHero">
+        <img class="project-hero-img" id="heroImg" src="" alt="">
+        <div class="project-hero-overlay"></div>
+        <div class="project-hero-content">
+            <p class="project-hero-category" id="heroCategory"></p>
+            <h1 class="project-hero-name" id="heroName"></h1>
+            <p class="project-hero-name-en zh-only" id="heroNameEn"></p>
+        </div>
+    </section>
+
+    <!-- PROJECT INFO BAR -->
+    <div class="project-info-bar" id="infoBar"></div>
+
+    <!-- GALLERY -->
+    <section class="gallery-section">
+        <div class="gallery-grid" id="galleryGrid"></div>
+    </section>
+
+    <!-- PROJECT NAV -->
+    <nav class="project-nav" id="projectNav"></nav>
+
+    <!-- CONTACT CTA -->
+    <section class="contact-cta">
+        <div class="contact-cta-inner reveal">
+            <p class="section-label">Get In Touch</p>
+            <h2 class="contact-title">
+                <span class="zh-only">開始你的空間計畫</span>
+                <span class="en-only">Start Your Space Journey</span>
+            </h2>
+            <p class="contact-desc">
+                <span class="zh-only">免費諮詢，讓我們聊聊你的理想空間。<br>無論是住宅、商業空間或建築外觀，川果設計都能為你實現。</span>
+                <span class="en-only">Free consultation &mdash; let's talk about your ideal space.<br>Whether residential, commercial, or architectural, NID Design Lab brings your vision to life.</span>
+            </p>
+            <a href="contact.html" class="contact-btn">
+                <span class="zh-only">預約諮詢</span><span class="en-only">Book Consultation</span> <span>&rarr;</span>
+            </a>
+            <div class="contact-phone"><a href="tel:+886422980908">04-2298-0908</a></div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-left">
+                <img class="footer-logo-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAD6CAYAAACPpxFEAAAyTUlEQVR42u2dd5hkVZn/v29V9cyQ0xAkSRBQlJyHtCoqiKIiC/pTQVAUYVlcA6KrgCiL7iqKirCLggoIwuqqSBAUERgkDDBKDgIjYQhDZmJ31ff3x3kPfeZOddW9Vbe7q3q+n+e5T3VX1Y1173nPmwEhhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEKIpQDTJZj4kKyWvMmGmVFXVggJkIk0UBqAip9Xw8waBdevAGAvDY5+Tq/+TkXPSQghJEDGdtCuAagXESQufMwFUKPHBNAOAJYHwC5/87j+rWb2IkmTJiKEBMhEMdP8AsACANcBuMbM7ss7yJGcAmANAI/1ggCIx01yZQCr++A9BOAfeY4vWb8G4B4Aryvx8PY0s2tJVs2srsdICNGvgqPirxuRHOIwxyfaRJ71dyE5l+StJH9EcuNkBp9n/S1JvovkuiVqQSD5WZILfLmX5LI5j8vidkje5tdmkb92usT1p42Sb0UI0UdUJpAWtaWfz0IAdddCotklzzXYBcCyALYF8DH/O4+WFtf/BIBLANxF8nd5B/oc1ABM9mVKF79ztcRFpk8hBGoTSIBM878nA3gOwJ05BUj8fCf/mwDuAnCvm4HamYuiCWdbAA0AKyKYnOaX5CNgcoz1EiYM/wfgWBcE9RzfbwDYFMClOa6lEEICpK9oJI7iyN0A5pCstBIAPsDXSU4GsJ0LIANwh5kNuommnsPPsCaALXxdAvh94n8YKlFIljHzf8HMHuzAES+EEBNHgEQNgeRUBBNWjBK6xQfwSo6BmQgO5g1dWFQBTC9gvqq79rG8C4sagBm9/Jv7dSmigSyjR0UIMdE0kDiAvxHAqskAfkOB9RsAdky2VQdwW07zVxQw2/trFcA8ALdG7agX5a4L3bbmOZLw7yr3RAgx4ZzoljjA4/nMB3B7Qf/HjokAeArAHTkFQCOzf0Mwnz2Rc/9CCCENZJyIA/gOiQD5O4CHc2ZtNxIHeuR2M5vbzgGemM9WRDCfRWZE/4eZDekWw9IYVl44oTQJie64TEwZyazJNtpqsfq1RW0C+D8mYdiEFAfwRrskt+hgJ7k+gg8k+k9uTrSRoRzms80BrJ2Yz27SbbX0kg6sRaLwykjILGNQz7sND6yoFq3YICRAesl8RQT/xzqJA/zGnA7w+PlWAFZoIgDyPhQ7JtFb9UQAaYa2dGkeMSJvN59U3GxmM9tFAiaz/vcAmArgSjOblWe9JtvZG8B6AP5iZncWEWDJ8e8BYJMmk6cKgJcAzAEwy8weid/p5FiFBAh6wH/TQAi/TSOKZhQcwHdJNI5XAMwsKECmJevfD+Ah+T+wtPoT6wCOBnAggGdI7mpmD4w0wCYDfA3AqQA2AHAQgFnJ/Z178AdwAoCdAXwJIQ+qUiB3KD3+A9p890WStwE4D8D5ZrZQZW0kQPpu0tdEADyK4MQumkAYNZK/+oNvBfJHtko++puZLdCMbKlmng/EqwO4kOSeAObl0AZe9PUWdbHvl30bC0rYxrMAHk80/cgqLuje7MuRJI8xs+kSIorCQh/ZmuvueEz9H7ea2XwfwPM4wFdFMIGl6zdcGOUxf23g6n58aKZDVY71TIX7p4GQH3RGznuqjDIxlRK2Qd/GH81sWzPbxl+3NbNtEQJGdgFwBkLE43YAriT5Hn8mK7oFJED6ooAigOgAb2TMV5WcAuD1ANbEsL13esH6WTv4wxbLjczQLbXUE++dWQAGAXyY5GfMbKhdYc9eGxtIGsmqv5pPvF42sxvN7EgAewF4AKFu3Pkkt/KJmYSIBEjfFFBcNhEgRQXAtOT/BQgmrCL+i50xbAp8BqGGFuRAX6qJv/0FAL7pf59Ccm8XItU+0vIZG6zFJREqNTO7AcC+CHlPywH4tsreSID0kwDZI1H/n0Pn/o8KgEcAPOQPANs8WENN8kfuMLPnixZQJFnxkuuLLV5ypNbkN1rs88yi8uq9w3IAjkeoCj0JwDkkN+h3M48LkroLw0lm9gCC8x4A3gLgn2IYvW4BCZBeJfoctkszwM3s6YIFFLfF4vkjgwDa+U9i/4+1AWyWCJvpiTArFHdvZkNNlgUuqOZmepG/5J8PNllHDszeoeb30QcRgjvWAnCeNy6bKAUqB/15OB/BlGUI4cjyAyoKC70eb78aQgXcmABYJP+DCCXKX+smh0oBB3j8fGssnj8yo4j5K0lkPAghmmVBRqDHsMrtkvdWJ3mG29azmpL5Nr5hZs82+VyMwyTHzB4n+WEAVwHYFcDpZvax2DYZ/Z00Sb+P55O8GiGgZIuSWg8ICZBRjbffEosXUPxLF/kjDeQvoIgm5VPmJes3Ch7HPgAOQT67+ooAjmjz3f9GCMHUDLA3JjyTvf3vpwH8EMBhJG8zs9NJDvhkoK/liGtT//D/V0kmeaYsdciE1aP+jx0yBRT/2qH/owrgSeR3gMf1d0v2fzeA2Z2aAXL+Tnl+q/nSOnqOIXc4nwHgf/y9b5P8J+85U5kA5VuowBFpIOizKJc0guohX3IVUPQZ0y7ovIDiKmiSP1KwgGLcz2w/9kVF/SeZbVUQMukX6bbuOaLj/BgEE88uAM4lOc3MHu13IeLP0ypxEiOtQwKkp4vVkVwGizvAb3aVOW8BxQ0AbJw2oMpZQDH6FTZDcIpG89n0ouVLkuM8GcC3SpjBmW9jvkKJe9JXYF6l4AMI/WrWRcideKv/Vv1qcmz4+e3s9/89sbqwgjokQHptphNvylgBt9MCiltg8Q6CRfJHGgj5H+b/DyYNpNjB4LIQwELdihO/Sq/fv/8geTCAKwDsDuBUMzu6H6OyosZNcppbBAzA5fq1JUB6na0TBzgLVMC1JgUQX8RwA6lO8kde7T/SiQAhuZILs0ZJWdDPaObX0+V3amZ2NcnjAHwbwL+QvA+h0m0/mayqLjym+HnUEHyBl/nn0oAlQHqWXRMBMAuhCm6eATzbgMoQqpYWKaA4CcA2yUczPYyxkMqe+EtOAHCoazK1LgSHIfhA9kBIikwrsaZOTnbhe2oouqtrITLk98qpJLdEiMD7r0QLrfRQdFU1ljRp0kxqyCc/P00qMhyb1KKTAJEA6blZT8Pj57fLDODzciYQxgKKWyaD7m3RAZ7T/7ExhgsoVtF9AcVlAaycmNO6ESC1EQagKcn7k9BZtF4aCaZaR90R60UdiRCMsX0SQNErAnrQJ0T1EbTmdyKUjX+Tv/1vZnapfB8SID08eXu1g+CmGE4AvBmL+yfaCYDNEUptxwH7+oL+jx387yH//9YuZ/bLlfBbxEFnhWQgYpLQ9X4Ay/j/z+Z1sicC+YFM1eP75KhvqanVW12bxKk+z53qN/okot5lGHajhG3Ee2ZbkqclxULj87MOQguDjTBchv7zZnaWhIcESD/kf2ztM+ohH8hvKCgAdknCXhcUaCDFpANhvHZPA/hbh4Np/P65CD6YRhcz+/iAL0Io6vjq8XpI5d0jxO7nldzzE0HZ0TawdNXAqiYTg3ZO9b+T/CiA3/lHA13sO04gpnSxjRV9G2/wZSSeAnAJQhDAPRIeEiD9IkCmJcc+B/kTAFP/R2xB+zCCEzxX/giWLKB4u5m91EnGbdyfmV0J4MpRSu5K63dZxoZdOAIuG7qpx6fpBOMqv9bXtJuYxJ42bvo5BKGy7f1daHe/QvB/3daBVhy/+3sEf8z8Js/ffACPAbgXoW3u0wrZXbqxPvOBAMCfAOzpf19nZnvk9H/QHeD3AtjQP/qZmR2SY/2YP7KuC6wV/NqdZGYnFEwgXCwkmeRJAD5Qkg9kLoD9YnKaHJn909+mH38rn1RQ95k0kH4poLgqFm8hW7SA4usRmlBFc9FNyO8/AYLzfcVksL+pC/9H3ObaCE75MliIzpzkotxmZ1ZkYM2UP+9Yu0v2XcY2kCOBUFqHBAj6qYDiNlg8YummnAIkW0BxyNeZUVAApP3X5wK4vQRn8kCJ12mywmzHP2Gw0xyR8dp32dsQEiC9XkCxisUd4HkLIO6SnPdshByQIuvvnBzPHQCe6qLiaNzn1f46VIITfQFCVAxUVFEIIRZv4vQbDvO3vOUfkp7OtyXr/ybTX72l74XkKiSfSNY/3d+v6RcSQkgD6V3/R4PksgghvJGbChZQXB/B18CM+Spv/shmAF7TTQHFAjbnqtuYh1qsNymTYd7WFNJNfwb1dhBC9KMJKx3A0wKKt3RZQPEvHRRQjP8vxLD/g2XZnJNonLr/vx6C4/+1CLH9sxGS+h7w3IwYCdPWaZoI0sKCoJt1hRBivEMFQfLjbjoa8tetcpqgav76DV+vQfJ5kmvlXD/u/8LEfHWv91Qvrbd1sp8qyYNJXkVyHptzD8mTXat61USXwwS4avy/gPkvrju16LpCCNErAuSnyQD6iJu02g7gyQB4VbL+DT7o5vV/DJB8IFn/wibJdWWc41Ykr0n200gEJknWM/8/T/JzTXJlmp3/xiQf9LyTXMeeCN/tST5G8kTdkUKIvkke9GWA5F+TgfPXeQbBjAP86WT97+RcPw6+m/vAHQfvo8pyoCfC430kX/LtL8xoHHOTz9jkOz8lOSmrHcT/XQA8knz/y/H4RxLAGeHxTLLuKXFfukOFEP0QfbURyfk+AyfJY/MM4MngvJuvN+ivB+QUIHEQPTgxnzVI7lKGBpKc3x7JsS3w12dJnkbybSQ39WuwI8mjSc5oIkh+kj2m5Pw/4t9Z5EtLIZKc904k52SO6yaSy7YzmwkhRK+Yrw7ICIA9CwqAzyQmoHkkNy3o//hBMmDPJrlCt/6PRDuY6uahVBhc4m13W637Lz6oN5L1PtlEiFSa+JCiEPlKk+/Ha7ZjonlE4XE9yZXL9P0IIcSotcz0128lA/gzJFcv6P+4KFn/7ryaQ2JCuzVZ//IyBtDk2E7NCI8LE8FVc6d6JVlqiWlub19v0IXjnCQ4wJoIwsMTITKYFSIkB/zvHRLNIx7XdAkPIQT6rYAiyWuTAfzanMIjrjuJ5EOpv6Cg/2N99z80fP2TuvV/JMf2GpIvJqaxO0lOdqFVbSPY4mB/XGagP67Z+SXC+PCRNBH/fOcmZqvrvIkQ5PsQQvST8JhK8oVkAP/PnP6PKAC2TGboJHmkvz+Q03z1zoz5bO9u/R/Jtg9NfBOpb6aWUzuqusC5L4naumUk53gbIXKsO8znNDFbrVJm1JkQQoyV/2OvzAC+f0EH+iGZ/JFtC/o/vp4Mzi/nzR/JKdzOSQTjY0Wd08kxfjU5xnledr7pMTYRIo1EuM7PXGtpHkIItMqyRo8XUNw+U0DxtoIVcKcl6z+K4XasRTsQGkLxxad9gO8mIzuu+9rkPGeY2Txv3cuCmtoNSSvSZRBK1jfN0jezIe9fchaATwIYTI5pim8jlmp5t5m9qN4iQoh+EyCNjAAwhG5ts3IKgNhjIe3lPdPM5vqAyBz1t1ZGKIESudUH0mpJJT1WS/5+xoVBEQc1/Tie9usR+1dPalM+ZYjkZDP7HwCnJuXyY5mYWQDebmYveK0xCQ8hRH8IkGQAXw6LN5C6JSmgyDa1mwhgXYQaWvG7t+Q87/j55gDWQqifhbIKKCa8nPy9vB8zO9DSVvK/67GhULvoNjNbSHIagP+XFJiMWsxaAD7TKsNdCCEqPW6+2gTDFXCB/A2k0g6Cy8XihBg29TDn+mkBxUUA/lqSAInbfyx5b6u0aGFBE9YbM423nhzpOGP7XZI7A/gthjs0Vn2puAbzNZLHe3Vf1b8SQvSdAHkzQse+qg9yNyOf/yOuvxOCjd8APIvQz7yI/2OH5Do9DOCBqB2VdN1vSZpJbQZgZx+oKwWq+RLAAcl2/w7gH83OMxEeOwG4FMGEttCv75UAjkmqHw8C+CrJE1yIVCVEhBDohxImHo30Qc8BmU9yFsll8uaA+HJjWkCxg/yRv3tE0hDJ88qKRsrU2BpMIsR+h+Hije2OM+aB7OuRVDEc9/tonQeyi5dJSXNHrk2irZplrJ/QrnaWEEL0qkB5LcmtOyjE+EGS3/PuhScXTCDcLAlrJcmjy+xAmOznd5nB/DOJEK1lMsrN3x9IrsujiQBZRHKLrKBLhEezJMFUeEzy1481ESInKhdECNF3mkhJVX0HCq4z4OXVDyF5Fskty8yHSATIVkk5kpiR/sUc629L8v6MMDi9ifCoJMLjuYywWiLPIxE2h7UQItJChBB9JUgqnSQj9nLP8mTQPiZJ4ItJfX8kuV+sP5WYkLYh+R2Sr2SEx0ySy6dCNzEF7pWYreL3/0xyxWZCMREizTSRb/p1lRAZ+V6ttlkqo9T6oNrBUoZJNm6rlizVMidbo3HdkmtWa3Ls1TKbxRXdXvp76qnqkbIoHd64tdEcMJNs8q+N0OvjKS/fPt0bQqUNpRYlHQo3aKJ9VDPaxMJEeKzUyiTVRBOJ2emXun9I5dzLGVhsIlsI2tV1G8c+Q9Uiz6dAy2glMb7CLea9HAHgGwh5HUCIhMqa3upJZj0A/BLAEWY2p1nGeBIafCiAswFcD2BfM3upXYZ5ErX1UQDnAPgNgH+Gh1WrP/oSuUv0XjEb+++UXh8iRMm9AOBhM7s3HaQ80q2b/U4F8A7fT54owQZCxYF7zOz2ov3u0+97VN+uAF4PYHkAsz1q8Toz+2t6H3ZxTTcBcJeZ3Vr0WJs9D7GYKUKk504A1vCvzEOoVnGDmV3f6bEn+1sOwLv8t/81QjWNEZ+d5JzXB7AngOcAXNHp/SGWvtpfm5A8M/FXNKPuEWYfyprD2pjK9iO5RhFfTnJcb0tMXpp4jHydLmJ7FpC82U2Xy3cz0032uys740dFg0MSE+k6JH/ZYtuDHiSyeyf3TXJuv/DtndHltYrPwXJe4252m2tzHcl3ldAML3JOgU6gH/J1HiI5uVefu5oe/R5RBc3qPhN9AMARJL8KYA8Ab0KomVXz2cj9AKab2a3pTdVqhuQaSMXMfptm+hc4roqZXZWdeYqmvOLax1Oed1RJNJAagHV8Nr2DL4eT/Fczu7obTcS1wqj1zECoclBpkfNUR6h9NqNIcqwPjPTZ+1UA3uAfXYOQ6Dvfz3EXv3f3BbCPV9H+d5KdaK5z/XjndWNu8+dgIwC/wHCJo4cB/BHAva7xb4BQ/25XALsB2I3kmQCOA/BSB5p3w3+LZQB8lOQdZnaqC4qhFust8nN+WY+UKOwwHA37bDc2dznOc8+Wz/aZ40UjzTA9EOIbJJ9PNJL3dhLll+x3pyTgYbMxOM8zfH8vkNxvhPN8H8nbYx+eosEwyb5+4tv4Tof3fQwmeU0SufgSyc9FX2CTdfb0QJboh1y7YKXsqIFsQHJuxm/5tpHOI9FADvTv39HLGojoYZt6EhVSSSJRamWFN4tRFSD/m0TSWLPBxwXJXUmAw45FB8gRBMiWzfY90tKB6WolT+ytJw3MFotiStZZheRXSE4pOgiWKUD89Ve+nedIviUbrZkNmPHn7Ovu40FB4ZcKkHluznvE9/8kyQ3bREBKgPRCpEWzkMIkIa82WmGVQgJkhAFipGTQ2Da40uEgmwqQLUajh0syKK7nraXp+UUDzXwo3UYwlSFAmjSGq3tASaw2YXm0+w78N1kBMuTh9H9PGrVNzv7e/SZAKhM0NLJqZjSzupkN+WsjrR9lZo30s3TGpuFQYPR8XfHeGyQ5YGazEOzrQGhd8PZYcbqb3cTovhaaRzda7AIE+z0BbG1mg+4Xqabbdf/ZeD9X0V9xuP893czO8TFi0Uj+jMyxV7r0+8VipXcBOAih/tyuAH4Q20P06/1cm0i+A++PUff/VwSwNYKjchMAawOY6uf8CoAnEBxodwC42cwegYfI+sPbkLNYjDJDft9eBOBLCO0D3gPgii63GwfGeo6BtYjwa/jxzkEIdV0LoeDmLDO7vMnzWAFQH68Q1KQtxBounA3Az1qF0+cJ/+2CqWY2wytNnArg4yT/ZmbfjyHzEiDjk0dRSQTH7gA+AmBvAOvl3MxCL7Z4IYD/NbPnuo3PFyKPNuID0yDJq12AbFWw42Yz1iL5XNJgrJnwqAJ43szmFz9sa5D8MoA/IeRPXEbyTwB+B+DPAB40sxfjOYzjcxTbG2wMYHWPbLqlmQDtoBdPxxMGM/sOyTcBOAzAN0nONLPr+jFpsdbvWofPCuokdwPwFQBvz4Q2pucZGy5ZUrZ8CKH/xZt9+QrJ7wI43cwWSIiIMUrmja2Wl3PT1mDBkGlLEkx/7fe1tQj5nQTgaADnFZn9RtOOmV1Pch8A30bouxOfHwB4iOQdAC4B8Gsze3ac2yKv7NdiLjJhsfH5Jvl+AIcgmOeypv0pAG4zs+O7DGOnC98qgKMQQqB3AfBzktPM7NFY0FQCZAx8Hf7DrwDgFABH+k2SCo14frMALOuzEPhN8rj/v2Im9npdAN8C8AGSx5jZDRIiYgxYVGK3y+V99t9KgAxgySoHRTWnP5DcHsD7AOyP0IBtfQAb+fIeACeQPMnMfjSOQmQgh+DdEcC7W5mfABxfnvJpCzwR+EYfc8718N6GBMjYCY83APg5gq+jkTwYQOg+eLH/QLcCOBnA5/2zJwFsB2AVhISid/myWvIwbw/gapLHmtn3xssv4rZkS2eAGmsnFPF+2iBObjrQPtLtNAC8FyExrjbCgBSTGp/IlMcp6g+pugP9IgAXeVb9G1wjeReAvRDMyGeRXN7MvjtOk7HnE01iCpZ0cAMhufARH0MqrsnNRygPcwBCCZqyiNfuYZIfQWjutieAU83saEWFjk245K4kn25SfPBSkns2We9byXceySYQeaLQCZ4YFbfZ8L+/oWQ6UUYY70iVpj2Et0Hy7CKhqiOE8W46VgVK00ilJt/ZguQtflwvkly7SDhqt2G8SSjtxp44SE9uLFJM8Uhf74qCx56G8cbK2a8foXXC55Kx6VNYvJSJwnhHQfPYBsG+Gh1jkwA8A+DDZravmf05ubFbxXq/mgtiZk+Y2Vddlb3ct1n3GckXSJ4S+4OPZQVhkm/ysuqHknx/L5enF4V/45qbdKYhRAsagiO6W5ZJ7u1Ki8W68D1GMxYzofAx4XXAzO4AcDCAFxFMxTuP5bgTj8k1i3tc8zrQNTtrU4Z/ij9ry47iIdb9HvgWgPP9vVNJvhEh0g3qiV6uKafhNXh+5eanKDxmAphmZufHGyHe2K3MTtEBn8R818zsfjN7J0JV3FpSFfc4kh+PNavG4JTjPt4L4EcIlXR/6OerrNT+T3Id8ErHkzykc8DNTlf4b9uNLbzh93bDc05GWtjFwLxaDOuNM+okx6XuEUdVAA+4qYwYNhGPJdFkdoELjf1I7ujXfiA9JxeEMey44cdcH80oPB/TKgA+CeA2N7Gdh1DZuOcrplf6K+rRCOAsBHtxFB63ICRfPRhndJ3YWP3mH4oPhJl9EcBnMhFc3ye5dSwwOEbnvdD3rcJq/UU0kyzRwMnvtUGSq/rAtoOv8xkzm+dh6d342qoj7LurhlKJ6WVXAH8h+YkojLKNmQAM+HO4EUIOliEEs4w1dRfI5yDkfS0L4BySa/pvUGnWDAvAoB//pESYjIqW5GPbXAAfBPAsgk/3hMxEUpRgXz404/N4hOQ6rcpRJ3bGpj6QZjP51Ebq3f/SfU7PZtyOlnnDX49NjvshkstKA+kLH8gFLb67OsmPJnWwSPLzJRZT3HCUuy1elRz32SQ3bnGe1/j3HovdNcfKB9JE8L0lach2L8l3tlhnFZKfJvmEf/+asn0gIzzv+3q5lXicd3dSRwyKwlrMF9DwAf/rSWOeIQAfMbPHy87idPtujNf+LIJfZJprPdMAfMDNZdXRVHHHKgkzY/pQ9n0Js14AW3kJ82oS7bMMgA0RopTW9ffnADg2Ka9R73K/DQ+dfbpFImE8ngEA95nZmTmjvmKy3aEATgewn/+9P8k/ArgOoZlUxc/xID9fAPiCmb3Q4Tk2knNDFxFjV5M8CMEcvBmAS10wXA7gIdf2V0Uo4/7W5NjvAfClLgbwepMGY9ljHPJx7FKSJwD4WrKeKGFm97mMJnBankY4nWggTWYRWyQVNRsxMkIaiGhyn16cs5HTbJKnxdl7pybRZL+7ddhQ6q5O7yeSH/dnoRVPkfxYl9pVbNJ1ZknNt7YheXmOa/M4yRM916xoJeFmDaU2z9H8LT73F/g6s6SBdK99TEZI+4/x688A+Lr/EPVRjuKomtkdJM9DKMg2iNAoZy+fLfRdkmHSNnM1P5cYlXKbmcnP0l0+xy8BPOraKpskrc1GcJbfamZzSij1EWfl/0BIgEW72W5GA3mg0whBTw483/M9dgewRZKH9TxCLtb/eoZ1J0mE6TWdjdD4qeNky6Rp2+0ITa52A7APQk5YrJP3IoabTF1pZk91WAuLyXX4DwCTk8gq5vDZHI4QPfacWkh3P6vbI2nGQpKn5p2JdKOBZJrRbO6Nf6IW8tMySlaPhwaSbPt9mRnXzqNRBly0rBxd6ffnEyU3Phujpm020nOhRmoTxwcSf7i9k/+HEOr32BgUP0vbwd5N8kaEjFEAeCvJFczs5T5u8zqY5Lq0a7EpOqgc0CbUtj6K/qxC9Zm6mNG32y+7Pc/kmrKMUihxG6lgi60fMr9fKb9Rsp/cPsb0uvayhaPXBUi8Qaclx3svgDvjxc0xg6uM8FC/+j7Jdj9qjWQdIclrTx9010GI1b4lKcyIPizkV02qs2qmVdLgNB6VfcfD4ToW+x2ta5oOzIlZrjGa++n133PCCJDETr9cklQDhIYwi1CwSB3JRRn75CsFbpa4jT8nkShAsPne4sKsr4qgCSGWGLDFBNJA4qx+DQArJY7eBSS39hlzPWdGdx0hmSkyGcBOJF8peCyrA5iH4fIG6/VDtqgQQiyNAgQ+aE9KBvGjfOmG1yDErHdK9BmsXkLzHyGEkADB6NXyr2TCDxsdlm2pNGk21YnPACozIISQAEFfZPWm1TOzgmA8z12mKyGEBAh6NzHrWQwXTjQAP0NoYDOlgA9kAUJiznv8vWcAfBqhxWUlRwRVrI66BoDvJk1pnsn0XhZCCAmQHhIgsxGq0E71/18ys0s7iOraNREgrwC4sGjIHsktXHg0XGg81m0b0hZJSjbCZ/F9axZ9HKNJ2iQ/vbqNFts2Ra0IIfrdhDUXodxCFCB7eB1/5hy4Y4LcZCzuD1mZ5Is5czjiNvbMhOze2a0AaTEQD7ogqGeE6iJfh10M8HHbg9n3+yX+XAghAdKuIm7Ns0NvQuhm1kCoorkJQoVMa6dFeD5JvUmy4KuNpNrNphm+1EjKP9cQ6trcjQ6jsJLuiscD+GcftKtNQoenJu+tC2AmyUYTbc0QQoz3c43tWheabKZp+PsrYPFggItJzkdrf1QVwGVm9oV+rAMmhFh6NJA4sF+J4LNo+KB4oJmdOBZ1hHwfJLlBkoVeAXCNmT3fxSBqSS7Jm9C+5Egc6DdH64THSX582xQINojHsnHO79+jIAIhRK8Xcos9ja9FqExZi/0IvMQyx6DQWdRQPoWQQFj3gfMXJW1/CvKFMg/kCBuOgQY2yr/tFD06Qohar5cX8Bn+XJI/AXCiz7LXB/CvZnayV9AcGuU+7OsDOMKFRw2h+czl0TzWZRnu/0PoGd0oYdBfhFCOeiFCCelai4lDA8DrAOyf7PtchKCFkfxC8XszlUAphEA/VDf1cuprk5zjrR6HSM4l+cZ25aI7Lefu+xzwv3+ZaWZ1VC+Wqe7g2u7p5zPor5vojhNCYIKYsGJ1zIqZPYHQ0jbWtloWoaz7cu6MLvtcamY2SPKzPkuP/oU7Afw4aic9LBxqJAdGWJZx4bhKZrWp/vnkFusO9LvgFEIsPWG8cDNSFaEP8wEAdvUBfWsAPye5f9JtrF5CX4WqC48DEbq8DSUJh58yswXeI4QlVBveCsGUNNilU9p8G9eY2VyPMmOLqLKhTIgwAAz5eVfGqyy5EEKMlj8CJF9H8pmMSenSxCRVS7WRvCYsN1nVkvU+4R0Q68l+vliW6So5rh+zPBbm6bGd7PvdGRPWDupIKITARDFhNelP/iCA9ycmpUUA3gngepJ7mtlQ/K4P9Nau65dvN87KVyb5AwD/nSQQTgJwlpmd4rkpZeY+DCU5FijBia4McSGEBMgILTSrZnYtgl/iJR/cFyLkUlxD8ockN/YWlXU3yTQr21FxoRETCqeQPATAjQjl4ocQfByTAPwYwKd8Zl524txCX+YBmN/hMi95lQARQkA+kJGFSM3MLiX5dgA/B7ARgv2/4vkaHyL5GwC/AnCLmT2eKdtBAHNJTkLwo+wD4EAMJ+ktxHDpkxPM7KSk5SVLOo+oeZyA4Gepl5CY1wDw9Hi2VhVCSID0uhAZck3kJpLTAPwngIMxnLW9IoCP+PIsyQcBrJZsYjUAVwDYAMCGWDKTezKA+wAcY2a/j9noZRYQTEqoVJEvSRA5KwYLIYTIU08q+Xtvkn/KOJUHczieY15J5CmSJ5FceTRzPRJH9g8TR/1Qh8ugb+MFkhtBTnQhhDSQXOYs83IjVwC4guQ+rnm8BcCayN8z/WYAFwK4wMyeTAseYvT9ULH0SLWLmmHWbz6tCTyxefW3GK9ik6N9DOn2c9ybVPl/CZCe0TZG+HwSgIaZXY5QZmRNADv5siGAaQBe619fgFBf636ExMDpAO6Nfom4LU+ZGGm/jZIeipoP/rUSOiNOVoHD3ijBM94l8Uf7GIpuX5WbJ+i9vhTNCr8G4Mv+78NmttF4z1I9kXBzF3CLSkgkHAJwg5nNb2c+cz/SuwH81terAdjRzG5RImHXv+maAHb3AfZyM1swxpoHEKoMfMQnS+eY2aI8rQsKnOMGAHZIWk5jhPL/jwK4M0ZDShORBjIeD+YUALshOLgbOQfaqGLXfHBOy6AvR/KfEUJfo/O5UcBcVPOH4pFOH4q4jpndjeG+IgJ9HxZfB7AdgIsx3MPl8TEUyhU37R4J4Gv+3osI5tkywtCrPuF4B4Azc67zN5LfN7MflR3NKCRAWmaf+0O3GoBLUF4Z8TUQ+qp3w+cAfLvbh9Id1pbNzTGzwRzr1VzwMfUL6bYed4b8nhjTxE4fnBve6uCIZLL1aZIXxfYIJQ3eC/0cXwRwV5PJWx3ASgjN37YEcBbJaWZ22Bi0YBASIEvM+he6AGFBUw+TdaxJOfWijud6STM5ZPM13E4c281uAmAPADu6wINrTNFnMz2aJZCjM6PAWJuGq+g+NLuwduCmyQ8BWAfAK34MOwF4q5ld5T69eknPZBXA/Wa2Rwuh9joAxwH4GEIfn9+b2S/kE5EAGWsBMuhLERPWIgTHcq1FFv4rGG7ExJwCpIYScy4SIVAnuQ2ALyKUZ1muxWozSX7PzM5xZ7/8FljqI7/qbu490t/+GoLp9mDv6HnVKGhElmgUSzxDXnro4x5evidCwu4vVDFBAmSsSrkDwDMIUVTVnDde1TWWHQCcncwErUlzpKsA/BuA5ds4BLPC58kymiqlGgTJYwF8NdG0hpr8RvH9rQGcTfIDAD5hZrM0q1uqib6PdwHYAsG0dCaArQAcAmAvkjua2c1l3yfRJEZyCd8Gycl+v/4BwJsBrKxKCaIfZmQrkbwrSRbM0vDkuwbJg8c7PJnkN5PjWpQc58Mk/0DyEpK3kpyfqb5Lkg+R3BQ5kwCVSDjqv+U7kt9n7dG+pl5JOi7X+76/G4+J5HX+3nndHkty7xzi27wx2XclcywVFyAg+T1/3n7TqpGbEKPZmbDdUvVy7lNIXpMRHvUmGep1XxaRfKvvZyDnvqzEAec4P55FyXFeTvLtsex8MhhsTPJ4zzonyQX+ejfJVfIcmwTIhBMgcb97+X7nk3x90qrgwOz7nVZYaCJA/pJjnZ1IPuvf/2y6HSF6xgbcpMdGnKFfR/LsRIDcRfLbyaAdS5i8bqwG0OSh39GPYTApTfKpJsKzmnlvM5K3ZYTI/+Q5fgmQCSdAYq+cS3y/P08mHOYTqqiNf7+bEj1NBMgMkqv5MtVfVyW5Fsk3kvxXf7ZI8k6f5Jg0ENFzLVz99QvJw9sg+TzJdUmemGkoVU0ETRyAbye5QlS/x6hB1u8zguzw5OGvpg9aYhaIvdrXJPlgYvaqk9xatbCWHgGS3EfbJRORXaKWkfzWR/sxzfHnoaN7PNneYb69eSRnJ8uTJJ/w/TBjil17NOvLCdGt8Ng/GRDjjH4f/+y7yc08ywXFZJLTM0Lk/9LZ2ygPNFv6oB/NbBcnZrR2ZqgoRN7s24hC4L/bPaQSIBNSgJzn+/yDTzJqiUm3SnJ1H+BJ8qROB/ImAmSkgqWNjO9xnmtIG8oHInrxod2G5MuJT4PRFOSzrWxL21X9s3V8dpQKkf8aTTtt8hAelxF42xaxTyfnflVybg+QXKbVQyoBMjEESOK03swH6EGSu7f4/ud9YH+sU1NScu981M9xppuq3kjyTZnXrUnuR/L7JF/x79/rpi6ZsaAw3l7IVK977aGLEUJxYzOoU83sDJKTzWwhuUR0bt2zch/3siZ/RgifHQTwOZL3m9lZsW5UyYceQxi3SX6HuwHM7KBInQH4JYC9fL2NAKyP0M/EFG+PCV630RokjwKwDELo7oc9tLtZr5g1EHKj1gFwsJmd5gJhqMPcLACYZ2Z3tfjeTAC/JXkuQjWJzQB80sxO7mLfQpTiNK+QnJREXEUN4ndJVFY09WQ1kJUypqAPJr6IIZ89vmU0bLZJdMwNyTFdUHSmmsx4d89EnO3R6rilgfS/BpJoH+skEXlFeJDkskU1gRHCeNMoyGy0Ys2rW4PkaW4h+KPuM2kg400s23AGQoZr1DzuRqhCysxMaSSGXMu4wHMpTkw6E17g9Xv+Xmamd5JstXzy9ssj9G7PMwt8xf+uJK9i6dA+Po5Qc+ofAH7mM3q26Fi5MkLb540B7G9m53WrCcTnYoQ6W40YGo+QEFxxbQnSjiVAxs1p7sLjOACHJSVLngfwfjN7Pmbb5pnl+LZqZvZVr0H1IRdIawD4FcndALxSViG6ZDtzkrfX8zLZjQ7KSKyVlHOP1YdFj0x0XDNpl5/DvBOUpGjiyn7/A8BpZnZqzvXXQSgpcowXWRzqspRJNfmbTQRdrO+2jwuN+7B49WKB/i0/3a/C4wAAp/jNX/XZ1QfN7N4OSzVEYXM4gL+4QFqIUEn0Jz7gV0py/MXr/kAyC9uK5PIFI1SiINotKeEy12ejUI/0nuAFM6ub2aC/jrQ0CpYtIYAPI/i7ZgP4WTTZJiHg2WWS3+On+72xPYB3uCbTqZl2KDmHoSbnNeRmth8hlCMyhNLyQhrI2NuY/YbcFqHGVezjMQnA0Wb2+06d3j77NzObT/IgANchdDBcBGB/kqeY2RdLcvxFATEdwCcQHPevAfAeMzs/zz5cyNCL5x2UCKI7ADyh5j3jXvwz1lX7OsmXE/MimgRUTAIww8wubmcqTbSPAb93COBcM5uTVnNuM0m63u/v3QEcheDc7uReqQNYh+TJI1yDZRGCOnYFMNXf/44/pxXVbRNjGnHlr2s1Cbv93khht4nTbyQnuo3gCN2J5NxMWPBhZYT3Jk701b3EQ6zJ9YD3cmiXx2GJY/LLmaz7tqUi5EQfdSf6vh04ta/Ic28l+/hUEvSxYd7EwGT99yX73idvsEhy7xxR8PzuIvlJ5YBIAxmvUtWxV/nFADZInOaXITTMKaXPgftNamZ2E8mPAbjAt1sHcAbJh8zsmm4qmrq2UzWzZ0ieCeBLrum8DsC5JN8fjyPpZxI1F3MNaxHJ9wE4IfF9PA3gp7G0t27vcdE8AOAhAD/I2emy7hrIzTnNjunnZyKEfj/sGmcjz/3tf16GUO59dQy3DWCBEPSZAM7w57DVdx9FCGy5zrV7acZizMN146zpnMxs+452CVFFNZAm62Vn+LNJblxCVdMYhrwKyfsz+/iD90ofad1lPAlxMFO99+A8M0lpIBOyF0jfaGhCjIfp6vOJyt7wWjuvL1C2o5AAyaj752ZMZreRXLHbhzdTx+ilzD7mu8A8kOTmbqbYneS/J4XxUuHxvbwlWCRAxmbSU3CpdJAHUu1mUG5Wb20UzrE2mmWBhMiTLHVAUu8p1rh6e06bcTcCJCZDTUmS/uIA/0uSy3Vb2j0RUm9JqpZGIZmtLZSyIPn7B0Xqd0mACCGWhlmcubnmwWRWTpJH5nVmdyNAMlrCel5DKK2c++4yVPNEiGxC8rKMoBjKLKkgeZTkoamwLZhNLAEihJjYtl0vzvZXH+S+UyQSqlsBkhngd06Ex1GunlfKtg+TfCfJi0g+3iSa5RU3oX2R5FpFhYcEiBACS0lP9JibcaebrD4B4D/GOsrII6KqZnYjyY8CGDSzi0dhHxXPSL4MwGVeMXhThFIVQIi2mmVmD2ZyYxRxJYSQABlBiFTM7CmEsMPxOo66H8fPk0rAjZL30Ui0EZrZcwBubKFF1CU8hBASIG0GVtc6KgAa4xVHnpZ8GM2BO247OeclaiaNQol5IYSYmKVMivbJGO3BfWk6ZyGEwEQopiiEEEICRAghBGTCQp/VKhJCCCEBUkjbsqRvhhBCCAkQtKt2CgCnAfgVQoXQBQhtYKHKoEIIIQGCVv3HzWwWgFn6ydGs8VHdtTMJUyGEBMgIZVEqRftPT3AGEMx51aXUJyaEKKG1qljKaox5hv9UhJ7v9Hthhpm9pKY/QgghhBBCGogYdbMeMI5lYoQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEKIn+f99R90sfjOWUAAAAABJRU5ErkJggg==" alt="川果設計">
+                <div class="footer-info">
+                    <span class="zh-only">台中市北區中清路一段 575 號</span>
+                    <span class="en-only">No. 575, Sec. 1, Zhongqing Rd., North Dist., Taichung City</span><br>
+                    04-2298-0908<br>
+                    niddesignlab@gmail.com<br>
+                    <span class="zh-only">週一至週五 09:00 &ndash; 18:00</span>
+                    <span class="en-only">Mon &ndash; Fri, 09:00 &ndash; 18:00</span>
+                </div>
+            </div>
+            <div class="footer-right">
+                <div class="footer-social">
+                    <a href="https://www.facebook.com/niddesignlab" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                    <a href="https://www.instagram.com/niddesignlab" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+                </div>
+                <div class="footer-copyright">&copy; 2026 NID Design Lab. All Rights Reserved.</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Close"></button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <div class="lightbox-img-wrap">
+            <img class="lightbox-img" id="lightboxImg" src="" alt="">
+        </div>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <div class="lightbox-counter" id="lightboxCounter"></div>
+    </div>
+
+    <script>
+    // ===== PROJECT DATA =====
+    const PROJECTS = {
+      "dalizhe-c": {
+        nameZh: "打里摺大榆二 C宅",
+        nameEn: "Dalizhe Dayu II \u2014 Residence C",
+        category: "residential",
+        categoryZh: "住宅空間",
+        categoryEn: "Residential",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "以現代侘寂美學為基調，透過大量木質與石材的運用，營造溫暖而寧靜的居住氛圍。開放式格局設計讓光線自由流動，每個角落都是生活的風景。",
+        descEn: "Grounded in modern Wabi-sabi aesthetics, this residence employs extensive wood and stone to create a warm, serene living atmosphere. The open-plan layout allows natural light to flow freely, turning every corner into a living landscape.",
+        basePath: "../川果設計網站設計資料/居家空間/台中 打里摺大榆二PLUS C宅/",
+        images: [
+          "2025-01-16 川果-南屯0976_nid.jpg",
+          "2025-01-16 川果-南屯0987_nid.jpg",
+          "2025-01-16 川果-南屯1071_nid.jpg",
+          "2025-01-16 川果-南屯1116_nid.jpg",
+          "2025-01-16 川果-南屯1134_nid.jpg",
+          "2025-01-16 川果-南屯1178_nid.jpg",
+          "2025-01-16 川果-南屯1220_nid.jpg",
+          "2025-01-16 川果-南屯1238_nid.jpg",
+          "2025-01-16 川果-南屯1248_nid.jpg",
+          "2025-01-16 川果-南屯1260_nid.jpg",
+          "2025-01-16 川果-南屯1290_nid.jpg",
+          "2025-01-16 川果-南屯1322_nid.jpg",
+          "2025-01-16 川果-南屯1349_nid.jpg",
+          "2025-01-16 川果-南屯1371_nid.jpg",
+          "2025-01-16 川果-南屯1383_nid.jpg",
+          "2025-01-16 川果-南屯1400_nid.jpg",
+          "2025-01-16 川果-南屯1408_nid.jpg",
+          "2025-01-16 川果-南屯1422_nid.jpg",
+          "2025-01-16 川果-南屯1431_nid.jpg",
+          "2025-01-16 川果-南屯1440_nid.jpg"
+        ]
+      },
+      "continental-wt": {
+        nameZh: "洲際 W-T宅",
+        nameEn: "Continental W-T Residence",
+        category: "residential",
+        categoryZh: "住宅空間",
+        categoryEn: "Residential",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "以低彩度的自然色調為主軸，搭配精準的燈光設計，創造出沉穩而高雅的生活空間。細膩的材質搭配與收納規劃，展現了設計師對生活品質的極致追求。",
+        descEn: "Centered on natural low-saturation tones paired with precise lighting design, this residence creates a sophisticated and elegant living space. Meticulous material pairing and storage planning demonstrate the designer\u2019s pursuit of ultimate living quality.",
+        basePath: "../川果設計網站設計資料/居家空間/台中 洲際W-T宅/",
+        images: [
+          "CP_09071_川果.jpg","CP_09099_川果.jpg","CP_09127_川果.jpg","CP_09141_川果.jpg",
+          "CP_09165_川果.jpg","CP_09177_川果.jpg","CP_09205_川果.jpg","CP_09241_川果.jpg",
+          "CP_09243_川果.jpg","CP_09246_川果.jpg","CP_09268_川果.jpg","CP_09290_川果.jpg",
+          "CP_09302_川果.jpg","CP_09306_川果.jpg","CP_09317_川果.jpg","CP_09335_川果.jpg",
+          "CP_09341_川果.jpg","CP_09367_川果.jpg"
+        ]
+      },
+      "forest-h": {
+        nameZh: "森聆苑 H宅",
+        nameEn: "Forest Listening H Residence",
+        category: "residential",
+        categoryZh: "住宅空間",
+        categoryEn: "Residential",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "以「聆聽自然」為設計概念，大面開窗引入周邊綠意，室內空間與自然環境形成對話。運用溫潤木質與清水模質感，打造出具有呼吸感的居住空間。",
+        descEn: "Designed around the concept of \u2018Listening to Nature,\u2019 expansive windows invite surrounding greenery indoors, creating a dialogue between interior and natural environment. Warm wood tones and fair-faced concrete textures craft a living space that breathes.",
+        basePath: "../川果設計網站設計資料/居家空間/台中 森聆苑 H宅/",
+        images: [
+          "0川果空間設計-0010-_川果.jpg","0川果空間設計-0026-_川果.jpg","0川果空間設計-0028-_川果.jpg",
+          "0川果空間設計-0055-_川果.jpg","0川果空間設計-0056_川果.jpg","0川果空間設計-0066_川果.jpg",
+          "0川果空間設計-0067-_川果.jpg","0川果空間設計-0075-_川果.jpg","0川果空間設計-0079-_川果.jpg",
+          "0川果空間設計-0083-_川果.jpg","0川果空間設計-0091-_川果.jpg",
+          "川果空間設計-0009-_川果.jpg","川果空間設計-0018-_川果.jpg","川果空間設計-0023-_川果.jpg",
+          "川果空間設計-0027_川果.jpg","川果空間設計-0033-_川果.jpg","川果空間設計-0035-_川果.jpg",
+          "川果空間設計-0045-_川果.jpg","川果空間設計-0049-_川果.jpg","川果空間設計-0050_川果.jpg",
+          "川果空間設計-0052-_川果.jpg","川果空間設計-0054-_川果.jpg","川果空間設計-0058-_川果.jpg",
+          "川果空間設計-0071-_川果.jpg","川果空間設計-0073-_川果.jpg","川果空間設計-0074-_川果.jpg",
+          "川果空間設計-0078-_川果.jpg","川果空間設計-0082-_川果.jpg","川果空間設計-0085-_川果.jpg",
+          "川果空間設計-0087_川果.jpg"
+        ]
+      },
+      "zhang-residence": {
+        nameZh: "張公館",
+        nameEn: "Zhang Residence",
+        category: "residential",
+        categoryZh: "住宅空間",
+        categoryEn: "Residential",
+        locationZh: "竹北",
+        locationEn: "Zhubei",
+        descZh: "融合東方禪意與現代極簡風格，以留白手法創造空間的層次感。精選天然石材與手工質感元素，每一處細節都體現了對居住美學的深刻理解。",
+        descEn: "Blending Eastern Zen with modern minimalism, this residence uses negative space to create spatial depth. Carefully selected natural stone and handcrafted textural elements reflect a profound understanding of residential aesthetics.",
+        basePath: "../川果設計網站設計資料/居家空間/竹北 張公館/",
+        images: [
+          "02222_川果.jpg","04159407_川果.jpg","04159422_川果.jpg","04159424_川果.jpg",
+          "04159435 1_川果.jpg","04159448_川果.jpg","04159465_川果.jpg","04159465-1_川果.jpg",
+          "04159466_川果.jpg","04159480_川果.jpg","04159484_川果.jpg","04159500_川果.jpg",
+          "04159506_川果.jpg","04159508_川果.jpg","04159518 1_川果.jpg","04159529 3_川果.jpg",
+          "04159539 2_川果.jpg","04159544 2_川果.jpg"
+        ]
+      },
+      "fuyu-k": {
+        nameZh: "富宇上景 K宅",
+        nameEn: "Fuyu Shangjing K Residence",
+        category: "residential",
+        categoryZh: "住宅空間",
+        categoryEn: "Residential",
+        locationZh: "南投",
+        locationEn: "Nantou",
+        descZh: "座落於南投山景之間，設計以大地色系為主調，讓室內空間與窗外山景自然融合。開放式客廳與餐廚區域的流暢動線，創造出既開闊又溫馨的家庭生活場域。",
+        descEn: "Nestled among Nantou\u2019s mountain views, the design employs earthy tones that naturally merge interior spaces with the surrounding landscape. Fluid circulation between the open living room and dining-kitchen area creates an expansive yet warm family living environment.",
+        basePath: "../川果設計網站設計資料/居家空間/南投 富宇上景 K宅/",
+        images: [
+          "川果0821-0001_川果.jpg","川果0821-0002_川果.jpg","川果0821-0003_川果.jpg",
+          "川果0821-0004_川果.jpg","川果0821-0005_川果.jpg","川果0821-0006_川果.jpg",
+          "川果0821-0007_川果.jpg","川果0821-0008_川果.jpg","川果0821-0009_川果.jpg",
+          "川果0821-0010_川果.jpg","川果0821-0011_川果.jpg","川果0821-0012_川果.jpg",
+          "川果0821-0013_川果.jpg","川果0821-0014_川果.jpg","川果0821-0015_川果.jpg",
+          "川果0821-0016_川果.jpg","川果0821-0017_川果.jpg","川果0821-0018_川果.jpg",
+          "川果0821-0019_川果.jpg","川果0821-0020_川果.jpg","川果0821-0021_川果.jpg",
+          "川果0821-0022_川果.jpg","川果0821-0025_川果.jpg","川果0821-0026_川果.jpg",
+          "川果0821-0027_川果.jpg","川果0821-0028_川果.jpg","川果0821-0029_川果.jpg",
+          "川果0821-0030_川果.jpg","川果0821-0031_川果.jpg","川果0821-0032_川果.jpg",
+          "川果0821-0033_川果.jpg","川果0821-0034_川果.jpg","川果0821-0035_川果.jpg",
+          "川果0821-0036_川果.jpg","川果0821-0037_川果.jpg","川果0821-0038_川果.jpg",
+          "川果0821-0039_川果.jpg","川果0821-0040_川果.jpg","川果0821-0041_川果.jpg",
+          "川果0821-0042_川果.jpg","川果0821-0043_川果.jpg","川果0821-0044_川果.jpg",
+          "川果0821-0045_川果.jpg","川果0821-0046_川果.jpg","川果0821-0047_川果.jpg",
+          "川果0821-0048_川果.jpg","川果0821-0049_川果.jpg","川果0821-0050_川果.jpg",
+          "川果0821-0051_川果.jpg","川果0821-0052_川果.jpg","川果0821-0053_川果.jpg",
+          "川果0821-0054_川果.jpg","川果0821-0055_川果.jpg","川果0821-0056_川果.jpg",
+          "川果0821-0057_川果.jpg","川果0821-0058_川果.jpg","川果0821-0059_川果.jpg",
+          "川果0821-0060_川果.jpg","川果0821-0061_川果.jpg","川果0821-0062_川果.jpg",
+          "川果0821-0063_川果.jpg","川果0821-0064_川果.jpg","川果0821-0065_川果.jpg",
+          "川果0821-0066_川果.jpg","川果0821-0067_川果.jpg","川果0821-0068_川果.jpg",
+          "川果0821-0069_川果.jpg","川果0821-0070_川果.jpg","川果0821-0071_川果.jpg",
+          "川果0821-0072_川果.jpg","川果0821-0073_川果.jpg","川果0821-0074_川果.jpg",
+          "川果0821-0075_川果.jpg","川果0821-0076_川果.jpg","川果0821-0077_川果.jpg",
+          "川果0821-0078_川果.jpg","川果0821-0079_川果.jpg","川果0821-0080_川果.jpg",
+          "川果0821-0081_川果.jpg","川果0821-0082_川果.jpg","川果0821-0083_川果.jpg"
+        ]
+      },
+      "chen-residence": {
+        nameZh: "陳公館",
+        nameEn: "Chen Residence",
+        category: "residential",
+        categoryZh: "住宅空間",
+        categoryEn: "Residential",
+        locationZh: "苗栗",
+        locationEn: "Miaoli",
+        descZh: "以家庭生活為核心的住宅設計，注重空間的溫度與機能平衡。自然材質的大量運用搭配柔和的燈光配置，營造出歸屬感十足的居家氛圍。",
+        descEn: "A family-centered residential design focused on balancing spatial warmth and functionality. Extensive use of natural materials paired with soft lighting creates a deeply inviting home atmosphere.",
+        basePath: "../川果設計網站設計資料/居家空間/苗栗 陳公館/",
+        images: [
+          "(1)_川果.jpg","(2)_川果.jpg","(3)_川果.jpg","(4)_川果.jpg","(5)_川果.jpg",
+          "(6)_川果.jpg","(7)_川果.jpg","(8)_川果.jpg","(9)_川果.jpg","(10)_川果.jpg",
+          "(11)_川果.jpg","(12)_川果.jpg","(13)_川果.jpg","(14)_川果.jpg","(15)_川果.jpg",
+          "(16)_川果.jpg","(17)_川果.jpg","(18)_川果.jpg","(19)_川果.jpg","(20)_川果.jpg",
+          "(21)_川果.jpg","(22)_川果.jpg"
+        ]
+      },
+      "shuili-retail": {
+        nameZh: "水里蛇窯 展售部",
+        nameEn: "Shuili Snake Kiln \u2014 Retail",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "南投",
+        locationEn: "Nantou",
+        awards: ["iF Design Award 2026 Winner", "BOY Award 2025 Winner"],
+        descZh: "將 1920 年代歷史窯場轉化為現代展售空間，以 Adaptive Reuse 設計理念，在保存歷史紋理的同時注入當代美學。原始磚牆、木構造與現代展示系統的對話，創造出獨一無二的文化商業空間。此作品榮獲德國 iF 設計獎與美國 BOY Award。",
+        descEn: "Transforming a 1920s heritage kiln site into a contemporary retail space through Adaptive Reuse design philosophy. While preserving historical textures, contemporary aesthetics are woven in. The dialogue between original brick walls, timber structures, and modern display systems creates a one-of-a-kind cultural commercial space. Winner of the German iF Design Award and American BOY Award.",
+        basePath: "../川果設計網站設計資料/商業空間/南投 水里蛇窯/展售部/",
+        images: [
+          "01.jpg","02.jpg","03.jpg","07.jpg","08.jpg","09.jpg","10.jpg","11.jpg","12.jpg",
+          "13.jpg","14.jpg","15.jpg","16.jpg","17.jpg","18.jpg","19.jpg","20.jpg","201.jpg",
+          "2025-01-14 水里蛇窯0243_nid.jpg","2025-01-14 水里蛇窯0386_nid.jpg",
+          "2025-01-14 水里蛇窯0396_nid.jpg","2025-01-14 水里蛇窯0410_nid.jpg",
+          "2025-01-14 水里蛇窯0470_nid.jpg","2025-01-14 水里蛇窯0473_nid.jpg",
+          "2025-01-14 水里蛇窯0496_nid.jpg","2025-01-14 水里蛇窯0537_nid.jpg",
+          "2025-01-14 水里蛇窯0568_nid.jpg","2025-01-14 水里蛇窯0570_nid.jpg",
+          "2025-01-14 水里蛇窯0581_nid.jpg","2025-01-14 水里蛇窯0593_nid.jpg",
+          "2025-01-14 水里蛇窯0612_nid.jpg","2025-01-14 水里蛇窯0658_nid.jpg",
+          "2025-01-14 水里蛇窯0668_nid.jpg","2025-01-14 水里蛇窯0670_nid.jpg",
+          "2025-01-14 水里蛇窯0694_nid.jpg","2025-01-14 水里蛇窯0724_nid.jpg",
+          "2025-01-14 水里蛇窯0784_nid.jpg","2025-01-14 水里蛇窯0802_nid.jpg",
+          "2025-01-14 水里蛇窯0840_nid.jpg",
+          "21.jpg","22.jpg","23.jpg","24.jpg","25.jpg","26.jpg","27.jpg","28.jpg",
+          "29.jpg","30.jpg","31.jpg","32.jpg","33.jpg","34.jpg"
+        ]
+      },
+      "shuili-gallery": {
+        nameZh: "水里蛇窯 藝廊區",
+        nameEn: "Shuili Snake Kiln \u2014 Gallery",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "南投",
+        locationEn: "Nantou",
+        awards: ["THE PLAN Award 2025 Shortlisted"],
+        descZh: "蛇窯藝廊區的設計延續了展售部的歷史保存精神，以更純粹的空間語言呈現藝術展示功能。裸露的結構體與精心設計的光線引導，讓每一件展品都能在最適切的氛圍中被欣賞。",
+        descEn: "The gallery area continues the heritage preservation spirit of the retail section, presenting art exhibition functions through a purer spatial language. Exposed structural elements and carefully designed light guidance ensure every exhibit is appreciated in the most fitting atmosphere.",
+        basePath: "../川果設計網站設計資料/商業空間/南投 水里蛇窯/藝廊區/",
+        images: [
+          "01.jpg","02.jpg","021.jpg","022.jpg","023.jpg","03.jpg","04.jpg","05.jpg",
+          "06.jpg","07.jpg","08.jpg","09.jpg","10.jpg","11.jpg","12.jpg","13.jpg",
+          "14.jpg","15.jpg","16.jpg","17.jpg",
+          "2025-01-14 水里蛇窯0849_nid.jpg","2025-01-14 水里蛇窯0888_nid.jpg",
+          "2025-01-14 水里蛇窯0894_nid.jpg","2025-01-14 水里蛇窯0916_nid.jpg"
+        ]
+      },
+      "days-eye": {
+        nameZh: "Days Eye Coffee",
+        nameEn: "Days Eye Coffee",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "以建築外觀到室內空間的一體化設計思維，為這間咖啡店打造獨特的品牌識別。大量自然光的引入與清水模質感的運用，創造出寧靜而富有層次的第三空間。",
+        descEn: "With an integrated design approach spanning from architectural facade to interior, this caf\u00e9 features a unique brand identity. Abundant natural light and fair-faced concrete textures create a serene, layered third space.",
+        basePath: "../川果設計網站設計資料/商業空間/台中 Days Eye Coffee/",
+        images: [
+          "0CP_01228_nid.jpg","0CP_01268_nid.jpg","0CP_01271_nid.jpg","0CP_01392_nid.jpg",
+          "0CP_01434_nid.jpg","0CP_01722_nid.jpg","0CP_01736_nid.jpg","0CP_01739_nid.jpg",
+          "0CP_01759_nid.jpg","0CP_01774_nid.jpg",
+          "CP_01290_nid.jpg","CP_01400_nid.jpg","CP_01439_nid.jpg","CP_01457_nid.jpg",
+          "CP_01494_nid.jpg","CP_01515_nid.jpg","CP_01517_nid.jpg","CP_01527_nid.jpg",
+          "CP_01532_nid.jpg","CP_01536_nid.jpg","CP_01536_nid_2.jpg","CP_01537_nid.jpg",
+          "CP_01587_nid.jpg","CP_01604_nid.jpg","CP_01746_nid.jpg","CP_01770_nid.jpg",
+          "CP_01772_nid.jpg"
+        ]
+      },
+      "jameson": {
+        nameZh: "JAMESON 美式煙燻",
+        nameEn: "JAMESON American Smokehouse",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "以美式工業風為基底，融入在地材質元素，創造出既粗獷又精緻的餐飲空間。煙燻橡木、鏽蝕金屬與手工磚牆的組合，完美詮釋了品牌的煙燻精神。",
+        descEn: "Built on American industrial style infused with local material elements, this dining space is both rugged and refined. The combination of smoked oak, oxidized metal, and handmade brick walls perfectly interprets the brand\u2019s smokehouse spirit.",
+        basePath: "../川果設計網站設計資料/商業空間/台中 JAMESON 美式煙燻/",
+        images: [
+          "2025-03-19 川果設計-美式煙燻00040.jpg","2025-03-19 川果設計-美式煙燻00060.jpg",
+          "2025-03-19 川果設計-美式煙燻00440.jpg","2025-03-19 川果設計-美式煙燻96700.jpg",
+          "2025-03-19 川果設計-美式煙燻9689_20.jpg","2025-03-19 川果設計-美式煙燻96960.jpg",
+          "2025-03-19 川果設計-美式煙燻97260.jpg","2025-03-19 川果設計-美式煙燻97380.jpg",
+          "2025-03-19 川果設計-美式煙燻97910.jpg","2025-03-19 川果設計-美式煙燻98040.jpg",
+          "2025-03-19 川果設計-美式煙燻98160.jpg","2025-03-19 川果設計-美式煙燻98180.jpg",
+          "2025-03-19 川果設計-美式煙燻98370.jpg","2025-03-19 川果設計-美式煙燻98420.jpg",
+          "2025-03-19 川果設計-美式煙燻98500.jpg","2025-03-19 川果設計-美式煙燻98570.jpg",
+          "2025-03-19 川果設計-美式煙燻9859_10.jpg","2025-03-19 川果設計-美式煙燻98640.jpg",
+          "2025-03-19 川果設計-美式煙燻98690.jpg","2025-03-19 川果設計-美式煙燻98730.jpg",
+          "2025-03-19 川果設計-美式煙燻98770.jpg","2025-03-19 川果設計-美式煙燻98870.jpg",
+          "2025-03-19 川果設計-美式煙燻99130.jpg","2025-03-19 川果設計-美式煙燻99140.jpg",
+          "2025-03-19 川果設計-美式煙燻99200.jpg","2025-03-19 川果設計-美式煙燻99300.jpg",
+          "2025-03-19 川果設計-美式煙燻99490.jpg","2025-03-19 川果設計-美式煙燻99600.jpg",
+          "2025-03-19 川果設計-美式煙燻99670.jpg","2025-03-19 川果設計-美式煙燻99820.jpg",
+          "2025-03-19 川果設計-美式煙燻99900.jpg","2025-03-19 川果設計-美式煙燻99910.jpg",
+          "2025-03-19 川果設計-美式煙燻99980.jpg"
+        ]
+      },
+      "phase-coffee": {
+        nameZh: "PHASE COFFEE ESPRESSO",
+        nameEn: "PHASE COFFEE ESPRESSO",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "以精品咖啡的精神為設計出發點，極簡的空間語彙搭配精準的材質選擇，讓空間本身成為品味的延伸。清水模與不鏽鋼的冷冽質感，對比暖木色調的吧台，營造出專業而舒適的咖啡體驗。",
+        descEn: "Designed from the spirit of specialty coffee, the minimalist spatial vocabulary paired with precise material choices makes the space itself an extension of taste. The cool textures of concrete and stainless steel contrast with warm wooden bar tones, creating a professional yet comfortable coffee experience.",
+        basePath: "../川果設計網站設計資料/商業空間/台中 PHASE COFFEE ESPRESSO/",
+        images: [
+          "2025-08-03 川果設計-PHASE27800.jpg","2025-08-03 川果設計-PHASE27940.jpg",
+          "2025-08-03 川果設計-PHASE28060.jpg","2025-08-03 川果設計-PHASE28820.jpg",
+          "2025-08-03 川果設計-PHASE29570.jpg","2025-08-03 川果設計-PHASE30300.jpg",
+          "2025-08-03 川果設計-PHASE30870.jpg","2025-08-03 川果設計-PHASE30930.jpg",
+          "2025-08-03 川果設計-PHASE30980.jpg","2025-08-03 川果設計-PHASE31680.jpg",
+          "2025-08-03 川果設計-PHASE31730.jpg","2025-08-03 川果設計-PHASE32110.jpg",
+          "2025-08-03 川果設計-PHASE32170.jpg","2025-08-03 川果設計-PHASE32330.jpg",
+          "2025-08-03 川果設計-PHASE32940.jpg","2025-08-03 川果設計-PHASE3339_10.jpg",
+          "2025-08-03 川果設計-PHASE33800.jpg","2025-08-03 川果設計-PHASE34090.jpg",
+          "2025-08-03 川果設計-PHASE34190.jpg","2025-08-03 川果設計-PHASE34530.jpg",
+          "2025-08-03 川果設計-PHASE34880.jpg","2025-08-03 川果設計-PHASE35100.jpg",
+          "2025-08-03 川果設計-PHASE35580.jpg","2025-08-03 川果設計-PHASE36400.jpg"
+        ]
+      },
+      "yidou": {
+        nameZh: "一斗鍋物",
+        nameEn: "Yi Dou Hot Pot",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "以現代日式風格詮釋鍋物餐飲空間，運用深色木格柵與柔和間接照明，營造出私密而放鬆的用餐氛圍。每個座位區域都經過精心規劃，確保食客擁有最舒適的用餐體驗。",
+        descEn: "Interpreting hot pot dining through modern Japanese aesthetics, deep-toned wood lattice screens and soft indirect lighting create an intimate, relaxing dining atmosphere. Every seating area is meticulously planned to ensure diners enjoy the most comfortable experience.",
+        basePath: "../川果設計網站設計資料/商業空間/台中 一斗鍋物/",
+        images: [
+          "2025-03-19 川果設計-一斗鍋物00900.jpg","2025-03-19 川果設計-一斗鍋物00940.jpg",
+          "2025-03-19 川果設計-一斗鍋物01040.jpg","2025-03-19 川果設計-一斗鍋物01090.jpg",
+          "2025-03-19 川果設計-一斗鍋物01130.jpg","2025-03-19 川果設計-一斗鍋物01400.jpg",
+          "2025-03-19 川果設計-一斗鍋物01660.jpg","2025-03-19 川果設計-一斗鍋物01740.jpg",
+          "2025-03-19 川果設計-一斗鍋物01810.jpg","2025-03-19 川果設計-一斗鍋物01900.jpg",
+          "2025-03-19 川果設計-一斗鍋物01960.jpg","2025-03-19 川果設計-一斗鍋物01970.jpg",
+          "2025-03-19 川果設計-一斗鍋物02080.jpg","2025-03-19 川果設計-一斗鍋物02280.jpg",
+          "2025-03-19 川果設計-一斗鍋物02340.jpg","2025-03-19 川果設計-一斗鍋物02510.jpg",
+          "2025-03-19 川果設計-一斗鍋物02620.jpg","2025-03-19 川果設計-一斗鍋物02630.jpg",
+          "2025-03-19 川果設計-一斗鍋物02700.jpg","2025-03-19 川果設計-一斗鍋物02770.jpg",
+          "2025-03-19 川果設計-一斗鍋物02900.jpg","2025-03-19 川果設計-一斗鍋物02930.jpg",
+          "2025-03-19 川果設計-一斗鍋物03170.jpg","2025-03-19 川果設計-一斗鍋物03320.jpg",
+          "2025-03-19 川果設計-一斗鍋物03430.jpg","2025-03-19 川果設計-一斗鍋物03680.jpg",
+          "2025-03-19 川果設計-一斗鍋物03860.jpg","2025-03-19 川果設計-一斗鍋物03960.jpg"
+        ]
+      },
+      "entry-coffee": {
+        nameZh: "入厝咖啡",
+        nameEn: "Entry Coffee & Bistro",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "以「入厝」為概念，將咖啡店打造成如同回家般溫暖的空間。大量使用回收老木料與手工質感建材，每一面牆、每一張桌都承載著時間的故事，體現川果設計對材質本真的堅持。",
+        descEn: "Built around the concept of \u2018homecoming,\u2019 this caf\u00e9 is designed to feel as warm as returning home. Extensive use of reclaimed timber and handcrafted building materials means every wall and table carries the story of time, embodying NID Design Lab\u2019s commitment to material authenticity.",
+        basePath: "../川果設計網站設計資料/商業空間/台中 入厝咖啡 Entry Coffee & Bistro/",
+        images: [
+          "CP_06777_川果.jpg","CP_06782_川果.jpg","CP_06849_川果.jpg","CP_06862_川果.jpg",
+          "CP_06880_川果.jpg","CP_06884_川果.jpg","CP_06958_川果.jpg","CP_06981_川果.jpg",
+          "CP_07053_川果.jpg","CP_07094_川果.jpg","CP_07099_川果.jpg","CP_07111_川果.jpg",
+          "CP_07124_川果.jpg","CP_07147_川果.jpg","CP_07155_川果.jpg","CP_07200_川果.jpg",
+          "CP_07205_川果.jpg","CP_07227_川果.jpg","CP_07238_川果.jpg","CP_07254_川果.jpg",
+          "CP_07260_川果.jpg","CP_07263_川果.jpg","CP_07278_川果.jpg","CP_07286_川果.jpg",
+          "CP_07295_川果.jpg","CP_07297_川果.jpg","CP_07315_川果.jpg","CP_07321_川果.jpg",
+          "CP_07342_川果.jpg","CP_07345_川果.jpg","CP_07361_川果.jpg","CP_07367_川果.jpg",
+          "CP_07375_川果.jpg","CP_07425_川果.jpg","CP_07458_川果.jpg","CP_07497_川果.jpg",
+          "CP_07529_川果.jpg","CP_07558_川果.jpg","CP_07565_川果.jpg","CP_07570_川果.jpg",
+          "CP_07590_川果.jpg","CP_07612_川果.jpg","CP_07624_川果.jpg","CP_07632_川果.jpg"
+        ]
+      },
+      "eighthours-opera": {
+        nameZh: "八時神仙草 歌劇院店",
+        nameEn: "Eight Hours \u2014 Opera House",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "位於台中國家歌劇院商圈的甜品店，以深色調與東方元素打造神秘而雅致的品牌空間。弧形天花與精緻的燈光設計，與歌劇院的建築語彙形成呼應。",
+        descEn: "A dessert shop in the Taichung National Theater commercial district, featuring deep tones and Eastern elements to create a mysterious yet elegant brand space. Curved ceilings and refined lighting design echo the architectural vocabulary of the theater.",
+        basePath: "../川果設計網站設計資料/商業空間/台中 八時神仙草 歌劇院店/",
+        images: [
+          "DSC_4634.jpg","DSC_4636.jpg","DSC_4665.jpg","DSC_4710.jpg","DSC_4713.jpg",
+          "DSC_4718.jpg","DSC_4733.jpg","DSC_4748.jpg","DSC_4791.jpg","DSC_4796.jpg",
+          "DSC_4808.jpg"
+        ]
+      },
+      "aichu-zhongyong": {
+        nameZh: "艾初 忠勇店",
+        nameEn: "Aichu \u2014 Zhongyong",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "以溫暖木質調為主軸的早午餐空間，簡約的設計語彙讓食物成為空間的主角。自然光透過大面落地窗灑入，營造出輕鬆愉悅的用餐氛圍。",
+        descEn: "A brunch space anchored in warm wood tones, where minimalist design language lets the food take center stage. Natural light pours through floor-to-ceiling windows, creating a relaxed and cheerful dining atmosphere.",
+        basePath: "../川果設計網站設計資料/商業空間/台中 艾初 忠勇店/",
+        images: [
+          "川果_2434_ok.jpg","川果_2445_ok.jpg","川果_2449_ok.jpg","川果_2453_ok.jpg",
+          "川果_2455_ok.jpg","川果_2471_ok.jpg","川果_2479_ok.jpg","川果_2493_ok.jpg",
+          "川果_2499_ok.jpg","川果_2508_ok.jpg","川果_2517_ok.jpg","川果_2523_ok.jpg"
+        ]
+      },
+      "aichu-guomei": {
+        nameZh: "艾初 國美店",
+        nameEn: "Aichu \u2014 Guomei",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "延續艾初品牌的溫暖基因，國美店以更精緻的材質搭配與空間比例，提升了整體用餐體驗。位於國美館商圈，設計上融入了藝文氣息，與周邊環境形成和諧對話。",
+        descEn: "Continuing the warm DNA of the Aichu brand, the Guomei location elevates the dining experience with more refined material pairing and spatial proportions. Situated in the National Museum of Fine Arts district, the design incorporates artistic ambiance in harmonious dialogue with its surroundings.",
+        basePath: "../川果設計網站設計資料/商業空間/台中 艾初 國美店/",
+        images: [
+          "川果_2533_ok.jpg","川果_2537_ok.jpg","川果_2545_ok.jpg","川果_2546_ok.jpg",
+          "川果_2549_ok.jpg","川果_2551_ok.jpg","川果_2562_ok.jpg","川果_2563_ok.jpg",
+          "川果_2567_ok.jpg","川果_2577_ok.jpg","川果_2581_ok.jpg","川果_2590_ok.jpg",
+          "川果_2593_ok.jpg","川果_2598_ok.jpg","川果_2602_ok.jpg","川果_2607_ok.jpg",
+          "川果_2611_ok.jpg","川果_2616_ok.jpg","川果_2617_ok.jpg"
+        ]
+      },
+      "forman-music": {
+        nameZh: "孚曼音樂",
+        nameEn: "Forman Music",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "為音樂教室打造的空間設計，兼顧聲學需求與視覺美感。以深色木質與弧形元素營造沉穩的音樂學習環境，隔音與迴響經過精密計算，讓每一個音符都能被清晰聽見。",
+        descEn: "A space designed for a music studio balancing acoustic requirements with visual beauty. Deep wood tones and curved elements create a composed learning environment, with soundproofing and reverberation precisely calculated so every note can be clearly heard.",
+        basePath: "../川果設計網站設計資料/商業空間/台中 孚曼音樂 FORMAN MUSIC/",
+        images: [
+          "2025-06-23 川果-孚曼音樂4276 (MF)-恢复的-编辑0.jpg",
+          "2025-06-23 川果-孚曼音樂4338-编辑0.jpg",
+          "2025-06-23 川果-孚曼音樂4385  (MF)-编辑0.jpg",
+          "2025-06-23 川果-孚曼音樂4394  (MF)-编辑0.jpg",
+          "2025-06-23 川果-孚曼音樂4430-编辑0.jpg",
+          "2025-06-23 川果-孚曼音樂4447  (MF)-编辑0.jpg",
+          "2025-06-23 川果-孚曼音樂4453-编辑0.jpg",
+          "2025-06-23 川果-孚曼音樂4460-恢复的-编辑0.jpg",
+          "2025-06-23 川果-孚曼音樂4470 (MF)-编辑0.jpg",
+          "2025-06-23 川果-孚曼音樂4473 (MF)-编辑0.jpg",
+          "2025-06-23 川果-孚曼音樂4491 (MF)-编辑0.jpg",
+          "2025-06-23 川果-孚曼音樂45030.jpg",
+          "2025-06-23 川果-孚曼音樂45180.jpg",
+          "2025-06-23 川果-孚曼音樂45280.jpg"
+        ]
+      },
+      "boba-empire": {
+        nameZh: "皇翼食品",
+        nameEn: "Boba Empire Show Room",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "為珍珠茶飲品牌打造的展示空間，以簡潔的白色基調搭配品牌色彩，創造出專業而現代的產品展示環境。空間動線的規劃讓訪客能自然地了解品牌故事與產品特色。",
+        descEn: "A showroom designed for a bubble tea brand, featuring a clean white palette accented with brand colors to create a professional, modern product display environment. Spatial circulation guides visitors naturally through the brand story and product features.",
+        basePath: "../川果設計網站設計資料/商業空間/台中 皇翼食品 Boba Empire Show Room/",
+        images: [
+          "20230516-0046_川果.jpg","JZ6_9378_川果.jpg","JZ6_9395_川果.jpg","JZ6_9400_川果.jpg",
+          "JZ6_9404_川果.jpg","JZ6_9429_川果.jpg","JZ6_9444_川果.jpg","JZ6_9445_川果.jpg",
+          "JZ6_9450_川果.jpg","JZ6_9451_川果.jpg","JZ6_9453_川果.jpg","JZ6_9459_川果.jpg",
+          "JZ6_9473_川果.jpg"
+        ]
+      },
+      "fuyida": {
+        nameZh: "富易達保經",
+        nameEn: "Fuyida Insurance Center",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "以專業與信賴感為設計核心的保險經紀辦公空間。深色木質搭配金屬元素，營造出穩重而現代的企業形象。開放與私密空間的巧妙配置，滿足多元的辦公需求。",
+        descEn: "An insurance brokerage office centered on professionalism and trust. Dark wood paired with metallic elements creates a solid, modern corporate image. The clever arrangement of open and private spaces meets diverse office needs.",
+        basePath: "../川果設計網站設計資料/商業空間/台中 富易達保經中二營運中心/",
+        images: [
+          "2024-10-01 川果-辦公室06470.jpg","2024-10-01 川果-辦公室06760.jpg",
+          "2024-10-01 川果-辦公室06770.jpg","2024-10-01 川果-辦公室07130.jpg",
+          "2024-10-01 川果-辦公室07230.jpg","2024-10-01 川果-辦公室07290.jpg",
+          "2024-10-01 川果-辦公室07510.jpg","2024-10-01 川果-辦公室07930.jpg",
+          "2024-10-01 川果-辦公室07940.jpg","2024-10-01 川果-辦公室08050.jpg",
+          "2024-10-01 川果-辦公室08110.jpg","2024-10-01 川果-辦公室08160.jpg",
+          "2024-10-01 川果-辦公室08510.jpg","2024-10-01 川果-辦公室08680.jpg",
+          "2024-10-01 川果-辦公室08710.jpg","2024-10-01 川果-辦公室08730.jpg",
+          "2024-10-01 川果-辦公室08790.jpg","2024-10-01 川果-辦公室08880.jpg",
+          "2024-10-01 川果-辦公室09010.jpg","2024-10-01 川果-辦公室09150.jpg",
+          "2024-10-01 川果-辦公室09190.jpg","2024-10-01 川果-辦公室09670.jpg",
+          "2024-10-01 川果-辦公室10010.jpg","2024-10-01 川果-辦公室10390.jpg",
+          "2024-10-01 川果-辦公室10690.jpg","2024-10-01 川果-辦公室10730.jpg",
+          "2024-10-01 川果-辦公室10890.jpg","2024-10-01 川果-辦公室10990.jpg",
+          "2024-10-01 川果-辦公室11450.jpg","2024-10-01 川果-辦公室11580.jpg",
+          "2024-10-01 川果-辦公室11690.jpg","2024-10-01 川果-辦公室11930.jpg",
+          "2024-10-01 川果-辦公室11970.jpg","2024-10-01 川果-辦公室12050.jpg",
+          "2024-10-01 川果-辦公室12200.jpg","2024-10-01 川果-辦公室12260.jpg",
+          "2024-10-01 川果-辦公室12310.jpg","2024-10-01 川果-辦公室12470.jpg"
+        ]
+      },
+      "crosstime": {
+        nameZh: "跨蒔咖啡",
+        nameEn: "Cross Time Coffee",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "台中",
+        locationEn: "Taichung",
+        descZh: "二樓空間的咖啡店設計，以大面開窗引入街景與自然光，創造出獨特的「浮在城市之上」的用餐體驗。溫潤的木質調與植栽的點綴，讓人在城市中找到一方寧靜角落。",
+        descEn: "A second-floor caf\u00e9 design with expansive windows that invite street views and natural light, creating a unique \u2018floating above the city\u2019 dining experience. Warm wood tones and touches of greenery offer a quiet corner within the urban landscape.",
+        basePath: "../川果設計網站設計資料/商業空間/台中 跨蒔咖啡健行店2F/",
+        images: [
+          "跨蒔咖啡2F-0749_nid.jpg","跨蒔咖啡2F-0777_nid.jpg","跨蒔咖啡2F-1572_nid.jpg",
+          "跨蒔咖啡2F-1574_nid.jpg","跨蒔咖啡2F-1582_nid.jpg","跨蒔咖啡2F-1597_nid.jpg",
+          "跨蒔咖啡2F-1606_nid.jpg","跨蒔咖啡2F-1612_nid.jpg","跨蒔咖啡2F-1615_nid.jpg",
+          "跨蒔咖啡2F-1623_nid.jpg","跨蒔咖啡2F-1630_nid.jpg","跨蒔咖啡2F-1642_nid.jpg",
+          "跨蒔咖啡2F-1647_nid.jpg","跨蒔咖啡2F-1649_nid.jpg","跨蒔咖啡2F-1665_nid.jpg",
+          "跨蒔咖啡2F-1670_nid.jpg","跨蒔咖啡2F-1672_nid.jpg","跨蒔咖啡2F-1704_nid.jpg",
+          "跨蒔咖啡2F-1706_nid.jpg","跨蒔咖啡2F-1709_nid.jpg","跨蒔咖啡2F-1710_nid.jpg",
+          "跨蒔咖啡2F-1716_nid.jpg","跨蒔咖啡2F-1727_nid.jpg","跨蒔咖啡2F-1728_nid.jpg",
+          "跨蒔咖啡2F-1738_nid.jpg","跨蒔咖啡2F-1750_nid.jpg","跨蒔咖啡2F-1754_nid.jpg",
+          "跨蒔咖啡2F-1757_nid.jpg","跨蒔咖啡2F-1760_nid.jpg","跨蒔咖啡2F-1761_nid.jpg",
+          "跨蒔咖啡2F-1769_nid.jpg","跨蒔咖啡2F-1775_nid.jpg","跨蒔咖啡2F-1783_nid.jpg",
+          "跨蒔咖啡2F-1784_nid.jpg","跨蒔咖啡2F-1786_nid.jpg","跨蒔咖啡2F-1794_nid.jpg",
+          "跨蒔咖啡2F-1796_nid.jpg","跨蒔咖啡2F-1798_nid.jpg","跨蒔咖啡2F-1800_nid.jpg",
+          "跨蒔咖啡2F-1803_nid.jpg","跨蒔咖啡2F-1806_nid.jpg","跨蒔咖啡2F-1811_nid.jpg",
+          "跨蒔咖啡2F-1814_nid.jpg","跨蒔咖啡2F-1816_nid.jpg","跨蒔咖啡2F-1826_nid.jpg",
+          "跨蒔咖啡2F-1828_nid.jpg","跨蒔咖啡2F-1830_nid.jpg"
+        ]
+      },
+      "eighthours-zhongshan": {
+        nameZh: "八時神仙草 中山店",
+        nameEn: "Eight Hours \u2014 Zhongshan",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "台北",
+        locationEn: "Taipei",
+        descZh: "位於台北中山區的旗艦店面，以東方意境為設計靈感，結合現代空間語彙。深邃的色調與考究的材質細節，為品牌在首都的呈現注入了更深層的文化底蘊。",
+        descEn: "A flagship location in Taipei\u2019s Zhongshan district, inspired by Eastern artistic conception and combined with modern spatial vocabulary. Deep tones and refined material details infuse a deeper cultural heritage into the brand\u2019s capital city presence.",
+        basePath: "../川果設計網站設計資料/商業空間/台北 八時神仙草 中山店/",
+        images: [
+          "JZ6_6080-2_川果.jpg","JZ6_6081_2_川果.jpg","JZ6_6083_川果.jpg","JZ6_6084_川果.jpg",
+          "JZ6_6088_川果.jpg","JZ6_6089_川果.jpg","JZ6_6091_川果.jpg","JZ6_6095_川果.jpg",
+          "JZ6_6099_川果.jpg","JZ6_6100_川果.jpg","JZ6_6125_川果.jpg","JZ6_6127_川果.jpg",
+          "JZ6_6128_川果.jpg","JZ6_6130_川果.jpg","JZ6_6132_川果.jpg",
+          "JZ6_6133-編輯_川果.jpg","JZ6_6134_川果.jpg","JZ6_6140_川果.jpg",
+          "JZ6_6143_川果.jpg","JZ6_6145_川果.jpg","JZ6_6146_川果.jpg","JZ6_6148_川果.jpg",
+          "JZ6_6155_川果.jpg","JZ6_6220_川果.jpg","JZ6_6222_川果.jpg","JZ6_6223_川果.jpg",
+          "JZ6_6224_川果.jpg","JZ6_6227_川果.jpg","JZ6_6229_川果.jpg","JZ6_6230_川果.jpg",
+          "JZ6_6232_川果.jpg","JZ6_6235_川果.jpg","JZ6_6237_川果.jpg","JZ6_6239_川果.jpg",
+          "JZ6_6240_川果.jpg","JZ6_6242_川果.jpg","JZ6_6244_川果.jpg","JZ6_6246_川果.jpg",
+          "JZ6_6248_川果.jpg","JZ6_6250_川果.jpg","JZ6_6253_川果.jpg","JZ6_6254_川果.jpg",
+          "JZ6_6256_川果.jpg","JZ6_6258_川果.jpg","JZ6_6261_川果.jpg","JZ6_6263_川果.jpg",
+          "JZ6_6265_川果.jpg","JZ6_6266_川果.jpg"
+        ]
+      },
+      "chai-taoyuan": {
+        nameZh: "柴公館",
+        nameEn: "Chai Residence",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "桃園",
+        locationEn: "Taoyuan",
+        descZh: "以柴燒料理為主題的餐飲空間，設計上巧妙運用了木質與石材的原始質感，營造出溫暖而質樸的用餐環境。開放式廚房的設計讓食客能欣賞料理過程，增添了用餐的儀式感。",
+        descEn: "A dining space themed around wood-fired cuisine, cleverly employing raw textures of wood and stone to create a warm, rustic dining environment. The open kitchen design allows diners to watch the cooking process, adding a sense of ritual to the meal.",
+        basePath: "../川果設計網站設計資料/商業空間/桃園 柴公館/",
+        images: [
+          "2024-05-23 柴公館84340.jpg","2024-05-23 柴公館84560.jpg","2024-05-23 柴公館84650.jpg",
+          "2024-05-23 柴公館84690.jpg","2024-05-23 柴公館84760.jpg","2024-05-23 柴公館84880.jpg",
+          "2024-05-23 柴公館84890.jpg","2024-05-23 柴公館84970.jpg","2024-05-23 柴公館85040.jpg",
+          "2024-05-23 柴公館85190.jpg","2024-05-23 柴公館85300.jpg","2024-05-23 柴公館85340.jpg",
+          "2024-05-23 柴公館85370.jpg","2024-05-23 柴公館85450.jpg","2024-05-23 柴公館85670.jpg",
+          "2024-05-23 柴公館85740.jpg","2024-05-23 柴公館85870.jpg","2024-05-23 柴公館85900.jpg",
+          "2024-05-23 柴公館86070.jpg","2024-05-23 柴公館86210.jpg","2024-05-23 柴公館86310.jpg",
+          "2024-05-23 柴公館86370.jpg","2024-05-23 柴公館86400.jpg","2024-05-23 柴公館86540.jpg",
+          "2024-05-23 柴公館86560.jpg","2024-05-23 柴公館86600.jpg","2024-05-23 柴公館86650.jpg",
+          "2024-05-23 柴公館86770.jpg","2024-05-23 柴公館86860.jpg","2024-05-23 柴公館86920.jpg",
+          "2024-05-23 柴公館86950.jpg","2024-05-23 柴公館87070.jpg",
+          "2024-05-23 柴公館8708 30.jpg","2024-05-23 柴公館8708 70.jpg",
+          "CP_087660.jpg","CP_087720.jpg","CP_087740.jpg","CP_088090.jpg"
+        ]
+      },
+      "eighthours-yancang": {
+        nameZh: "八時神仙草 鹽倉店",
+        nameEn: "Eight Hours \u2014 Yancang",
+        category: "commercial",
+        categoryZh: "商業空間",
+        categoryEn: "Commercial",
+        locationZh: "彰化",
+        locationEn: "Changhua",
+        descZh: "以歷史鹽倉建築為基底的 Adaptive Reuse 設計，保留了原始建築的結構之美，並注入品牌的東方美學元素。斑駁的老牆面與精緻的現代家具形成對比，創造出獨特的時空交疊感。",
+        descEn: "An Adaptive Reuse design based on a historic salt warehouse, preserving the structural beauty of the original architecture while infusing the brand\u2019s Eastern aesthetic elements. Weathered old walls contrast with refined modern furnishings, creating a unique sense of temporal overlap.",
+        basePath: "../川果設計網站設計資料/商業空間/彰化 八時神仙草 鹽倉店/",
+        images: [
+          "276998334_10223664151904184_3595649735286262618_n_川果.jpg",
+          "川果設計-八時仙草(彰化店)-30_川果.jpg","川果設計-八時仙草(彰化店)-31_川果.jpg",
+          "川果設計-八時仙草(彰化店)-33_川果.jpg","川果設計-八時仙草(彰化店)-45_川果.jpg",
+          "川果設計-八時仙草(彰化店)-53_川果.jpg","川果設計-八時仙草(彰化店)-55_川果.jpg",
+          "川果設計-八時仙草(彰化店)-59_川果.jpg","川果設計-八時仙草(彰化店)-64_川果.jpg",
+          "川果設計-八時仙草(彰化店)-66_川果.jpg","川果設計-八時仙草(彰化店)-70_川果.jpg",
+          "川果設計-八時仙草(彰化店)-76_川果.jpg","川果設計-八時仙草(彰化店)-79_川果.jpg",
+          "川果設計-八時仙草(彰化店)-101_川果.jpg","川果設計-八時仙草(彰化店)-103_川果.jpg",
+          "川果設計-八時仙草(彰化店)-105_川果.jpg","川果設計-八時仙草(彰化店)-107_川果.jpg",
+          "川果設計-八時仙草(彰化店)-109_川果.jpg","川果設計-八時仙草(彰化店)-110_川果.jpg",
+          "川果設計-八時仙草(彰化店)-120_川果.jpg","川果設計-八時仙草(彰化店)-121_川果.jpg",
+          "川果設計-八時仙草(彰化店)-122_川果.jpg","川果設計-八時仙草(彰化店)-127_川果.jpg",
+          "川果設計-八時仙草(彰化店)-133_川果.jpg","川果設計-八時仙草(彰化店)-139_川果.jpg",
+          "川果設計-八時仙草(彰化店)-143_川果.jpg","川果設計-八時仙草(彰化店)-147_川果.jpg",
+          "川果設計-八時仙草(彰化店)-150_川果.jpg","川果設計-八時仙草(彰化店)-151_川果.jpg",
+          "川果設計-八時仙草(彰化店)-158_川果.jpg","川果設計-八時仙草(彰化店)-160_川果.jpg",
+          "川果設計-八時仙草(彰化店)-162_川果.jpg","川果設計-八時仙草(彰化店)-163_川果.jpg",
+          "川果設計-八時仙草(彰化店)-165_川果.jpg","川果設計-八時仙草(彰化店)-175_川果.jpg",
+          "川果設計-八時仙草(彰化店)-178_川果.jpg","川果設計-八時仙草(彰化店)-179_川果.jpg"
+        ]
+      }
+    };
+
+    const PROJECT_ORDER = [
+      "shuili-retail","shuili-gallery","days-eye","jameson","phase-coffee","yidou",
+      "entry-coffee","eighthours-opera","aichu-zhongyong","aichu-guomei","forman-music",
+      "boba-empire","fuyida","crosstime","eighthours-zhongshan","chai-taoyuan",
+      "eighthours-yancang","dalizhe-c","continental-wt","forest-h","zhang-residence",
+      "fuyu-k","chen-residence"
+    ];
+
+    // ===== GET PROJECT ID =====
+    const params = new URLSearchParams(window.location.search);
+    const projectId = params.get('id');
+    const project = PROJECTS[projectId];
+
+    if (!project) {
+        window.location.href = 'portfolio.html';
+    }
+
+    // ===== LANGUAGE STATE =====
+    const isZh = () => document.documentElement.classList.contains('lang-zh');
+
+    // ===== RENDER PAGE =====
+    function renderPage() {
+        const p = project;
+
+        // Page title
+        document.title = (isZh() ? p.nameZh : p.nameEn) + '｜川果設計 NID Design Lab';
+
+        // Hero
+        document.getElementById('heroImg').src = p.basePath + p.images[0];
+        document.getElementById('heroImg').alt = p.nameZh;
+        document.getElementById('heroCategory').innerHTML =
+            '<span class="zh-only">' + p.categoryZh + '</span>' +
+            '<span class="en-only">' + p.categoryEn + '</span>';
+        document.getElementById('heroName').innerHTML =
+            '<span class="zh-only">' + p.nameZh + '</span>' +
+            '<span class="en-only">' + p.nameEn + '</span>';
+        document.getElementById('heroNameEn').textContent = p.nameEn;
+
+        // Info bar
+        const infoBar = document.getElementById('infoBar');
+        infoBar.innerHTML = '';
+        // Category tag
+        const catTag = document.createElement('span');
+        catTag.className = 'info-tag';
+        catTag.innerHTML = '<span class="zh-only">' + p.categoryZh + '</span><span class="en-only">' + p.categoryEn + '</span>';
+        infoBar.appendChild(catTag);
+        // Location tag
+        const locTag = document.createElement('span');
+        locTag.className = 'info-tag';
+        locTag.innerHTML = '<span class="zh-only">' + p.locationZh + '</span><span class="en-only">' + p.locationEn + '</span>';
+        infoBar.appendChild(locTag);
+        // Award tags
+        if (p.awards) {
+            p.awards.forEach(function(award) {
+                const aTag = document.createElement('span');
+                aTag.className = 'info-tag award-tag';
+                aTag.textContent = award;
+                infoBar.appendChild(aTag);
+            });
+        }
+
+        // Gallery grid
+        renderGallery();
+
+        // Project nav
+        renderProjectNav();
+    }
+
+    // ===== GALLERY =====
+    // lightboxImages stores { src, index } for images only (not desc card)
+    let lightboxImages = [];
+
+    function renderGallery() {
+        const grid = document.getElementById('galleryGrid');
+        grid.innerHTML = '';
+        lightboxImages = [];
+
+        const p = project;
+        const images = p.images;
+        let lightboxIdx = 0;
+
+        // Position 0: First image (full width)
+        const item0 = document.createElement('div');
+        item0.className = 'gallery-item full-width';
+        item0.setAttribute('data-lightbox-index', lightboxIdx);
+        item0.innerHTML =
+            '<img src="' + p.basePath + images[0] + '" alt="' + p.nameZh + '">' +
+            '<div class="gallery-item-overlay"><span class="gallery-expand-icon">' +
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>' +
+            '</span></div>';
+        item0.addEventListener('click', function() { openLightbox(0); });
+        grid.appendChild(item0);
+        lightboxImages.push({ src: p.basePath + images[0] });
+        lightboxIdx++;
+
+        // Position 1: Description card (takes 1 column)
+        const descCard = document.createElement('div');
+        descCard.className = 'desc-card';
+        let descHTML = '<p class="desc-card-label">About This Project</p>';
+        descHTML += '<h2 class="desc-card-title"><span class="zh-only">' + p.nameZh + '</span><span class="en-only">' + p.nameEn + '</span></h2>';
+        descHTML += '<p class="desc-card-text"><span class="zh-only">' + p.descZh + '</span><span class="en-only">' + p.descEn + '</span></p>';
+        descHTML += '<div class="desc-card-tags">';
+        descHTML += '<span class="desc-tag"><span class="zh-only">' + p.categoryZh + '</span><span class="en-only">' + p.categoryEn + '</span></span>';
+        descHTML += '<span class="desc-tag"><span class="zh-only">' + p.locationZh + '</span><span class="en-only">' + p.locationEn + '</span></span>';
+        if (p.awards) {
+            p.awards.forEach(function(award) {
+                descHTML += '<span class="desc-tag award">' + award + '</span>';
+            });
+        }
+        descHTML += '</div>';
+        descCard.innerHTML = descHTML;
+        grid.appendChild(descCard);
+
+        // Position 2: Second image (1 column, beside desc card)
+        if (images.length > 1) {
+            const item1 = document.createElement('div');
+            item1.className = 'gallery-item';
+            item1.setAttribute('data-lightbox-index', lightboxIdx);
+            item1.innerHTML =
+                '<img src="' + p.basePath + images[1] + '" alt="' + p.nameZh + '" loading="lazy">' +
+                '<div class="gallery-item-overlay"><span class="gallery-expand-icon">' +
+                '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>' +
+                '</span></div>';
+            item1.addEventListener('click', function() { openLightbox(lightboxIdx - 1); });
+            grid.appendChild(item1);
+            lightboxImages.push({ src: p.basePath + images[1] });
+            lightboxIdx++;
+        }
+
+        // Remaining images: 2-column grid
+        for (var i = 2; i < images.length; i++) {
+            var idx = lightboxIdx;
+            var item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.setAttribute('data-lightbox-index', idx);
+            item.innerHTML =
+                '<img src="' + p.basePath + images[i] + '" alt="' + p.nameZh + '" loading="lazy">' +
+                '<div class="gallery-item-overlay"><span class="gallery-expand-icon">' +
+                '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>' +
+                '</span></div>';
+            (function(capturedIdx) {
+                item.addEventListener('click', function() { openLightbox(capturedIdx); });
+            })(lightboxIdx);
+            grid.appendChild(item);
+            lightboxImages.push({ src: p.basePath + images[i] });
+            lightboxIdx++;
+        }
+    }
+
+    // ===== LIGHTBOX =====
+    let currentLightboxIndex = 0;
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+
+    function openLightbox(index) {
+        currentLightboxIndex = index;
+        updateLightboxImage();
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function updateLightboxImage() {
+        lightboxImg.style.opacity = '0';
+        setTimeout(function() {
+            lightboxImg.src = lightboxImages[currentLightboxIndex].src;
+            lightboxImg.onload = function() {
+                lightboxImg.style.opacity = '1';
+            };
+            lightboxCounter.textContent = (currentLightboxIndex + 1) + ' / ' + lightboxImages.length;
+        }, 150);
+    }
+
+    function prevLightbox() {
+        currentLightboxIndex = (currentLightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+        updateLightboxImage();
+    }
+
+    function nextLightbox() {
+        currentLightboxIndex = (currentLightboxIndex + 1) % lightboxImages.length;
+        updateLightboxImage();
+    }
+
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxPrev').addEventListener('click', prevLightbox);
+    document.getElementById('lightboxNext').addEventListener('click', nextLightbox);
+
+    // Close on overlay click (not on image or buttons)
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) closeLightbox();
+    });
+
+    // Keyboard
+    document.addEventListener('keydown', function(e) {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') prevLightbox();
+        if (e.key === 'ArrowRight') nextLightbox();
+    });
+
+    // ===== PROJECT NAV =====
+    function renderProjectNav() {
+        const nav = document.getElementById('projectNav');
+        nav.innerHTML = '';
+        const idx = PROJECT_ORDER.indexOf(projectId);
+
+        // Previous project
+        if (idx > 0) {
+            const prevId = PROJECT_ORDER[idx - 1];
+            const prev = PROJECTS[prevId];
+            const link = document.createElement('a');
+            link.className = 'project-nav-link prev';
+            link.href = 'project.html?id=' + prevId;
+            link.innerHTML =
+                '<span class="project-nav-dir"><span class="arrow-back">&larr;</span> <span class="zh-only">上一個作品</span><span class="en-only">Previous Project</span></span>' +
+                '<span class="project-nav-name"><span class="zh-only">' + prev.nameZh + '</span><span class="en-only">' + prev.nameEn + '</span></span>' +
+                '<span class="project-nav-name-en zh-only">' + prev.nameEn + '</span>';
+            nav.appendChild(link);
+        } else {
+            // Empty placeholder
+            const empty = document.createElement('div');
+            empty.className = 'project-nav-link prev';
+            nav.appendChild(empty);
+        }
+
+        // Next project
+        if (idx < PROJECT_ORDER.length - 1) {
+            const nextId = PROJECT_ORDER[idx + 1];
+            const next = PROJECTS[nextId];
+            const link = document.createElement('a');
+            link.className = 'project-nav-link next';
+            link.href = 'project.html?id=' + nextId;
+            link.innerHTML =
+                '<span class="project-nav-dir"><span class="zh-only">下一個作品</span><span class="en-only">Next Project</span> <span>&rarr;</span></span>' +
+                '<span class="project-nav-name"><span class="zh-only">' + next.nameZh + '</span><span class="en-only">' + next.nameEn + '</span></span>' +
+                '<span class="project-nav-name-en zh-only">' + next.nameEn + '</span>';
+            nav.appendChild(link);
+        } else {
+            const empty = document.createElement('div');
+            empty.className = 'project-nav-link next';
+            nav.appendChild(empty);
+        }
+    }
+
+    // ===== INIT =====
+    renderPage();
+
+    // ===== MOBILE MENU =====
+    function toggleMenu() {
+        var menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('active');
+        document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+    }
+
+    // ===== LANGUAGE SWITCH =====
+    function switchLang() {
+        var html = document.documentElement;
+        if (html.classList.contains('lang-zh')) {
+            html.classList.remove('lang-zh');
+            html.classList.add('lang-en');
+            html.lang = 'en';
+        } else {
+            html.classList.remove('lang-en');
+            html.classList.add('lang-zh');
+            html.lang = 'zh-TW';
+        }
+        // Update page title
+        var p = project;
+        document.title = (isZh() ? p.nameZh : p.nameEn) + '｜川果設計 NID Design Lab';
+    }
+
+    // Show mobile lang btn
+    var mq = window.matchMedia('(max-width: 768px)');
+    function handleMQ(e) {
+        document.querySelector('.mobile-lang-btn').style.display = e.matches ? 'block' : 'none';
+    }
+    mq.addEventListener('change', handleMQ);
+    handleMQ(mq);
+
+    // Scroll reveal
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+    </script>
+</body>
+</html>
