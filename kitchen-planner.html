@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>設備平面配置 · 450×350</title>
+<style>
+  :root{
+    --paper:#FAF8F3;
+    --line:#D9D2C4;
+    --line-strong:#C4BBAA;
+    --ink:#243B5E;        /* 藍墨，呼應手稿 */
+    --ink-soft:#5B7099;
+    --text:#2B2B28;
+    --muted:#8A857B;
+    --bg:#EFEBE2;
+    --shadow:0 1px 3px rgba(40,40,30,.12);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;height:100%;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+    display:flex;flex-direction:column;height:100dvh;overflow:hidden;
+    user-select:none;-webkit-user-select:none;
+  }
+
+  /* 頂部 */
+  header{
+    padding:10px 14px 8px;display:flex;align-items:baseline;justify-content:space-between;gap:8px;
+  }
+  header h1{font-size:15px;margin:0;font-weight:700;letter-spacing:.5px;}
+  header .dim{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;}
+
+  /* 畫布區 */
+  .stage{
+    flex:1;display:flex;align-items:center;justify-content:center;
+    padding:6px 14px 0;overflow:hidden;
+  }
+  .frame{position:relative;}
+  .rulerTop,.rulerRight{position:absolute;color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums;letter-spacing:.5px;}
+  .rulerTop{top:-20px;left:0;width:100%;text-align:center;}
+  .rulerRight{right:-8px;top:50%;transform:translateY(-50%) rotate(90deg);transform-origin:center;}
+
+  .canvas{
+    position:relative;background:var(--paper);
+    border:1.5px solid var(--ink);border-radius:3px;
+    box-shadow:var(--shadow);overflow:hidden;touch-action:none;
+    background-image:
+      linear-gradient(var(--line) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line) 1px,transparent 1px),
+      linear-gradient(var(--line-strong) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line-strong) 1px,transparent 1px);
+    background-size:
+      var(--g) var(--g), var(--g) var(--g),
+      var(--g5) var(--g5), var(--g5) var(--g5);
+  }
+
+  /* 設備方塊 */
+  .item{
+    position:absolute;border-radius:3px;border:1.5px solid rgba(0,0,0,.18);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;line-height:1.15;cursor:grab;touch-action:none;
+    box-shadow:0 1px 2px rgba(40,40,30,.18);overflow:hidden;
+  }
+  .item .nm{font-weight:700;}
+  .item .sz{opacity:.7;font-variant-numeric:tabular-nums;margin-top:1px;}
+  .item.sel{outline:2.5px solid var(--ink);outline-offset:1px;box-shadow:0 3px 10px rgba(36,59,94,.35);z-index:50;}
+  .item.drag{cursor:grabbing;opacity:.95;}
+
+  /* 底部工具列 */
+  .bar{
+    background:#fff;border-top:1px solid var(--line);
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .row{display:flex;gap:8px;flex-wrap:wrap;}
+  button{
+    font-family:inherit;font-size:13px;font-weight:600;color:var(--text);
+    background:#F4F1EA;border:1px solid var(--line-strong);border-radius:8px;
+    padding:9px 12px;cursor:pointer;flex:1;min-width:64px;
+    display:flex;align-items:center;justify-content:center;gap:5px;
+    transition:transform .05s ease,background .15s;
+  }
+  button:active{transform:scale(.96);}
+  button.pri{background:var(--ink);color:#fff;border-color:var(--ink);}
+  button.warn{color:#9A3B30;}
+  button:disabled{opacity:.4;cursor:default;}
+  .hint{font-size:11.5px;color:var(--muted);text-align:center;margin:0;}
+  select{
+    font-family:inherit;font-size:13px;font-weight:600;color:var(--ink);
+    background:#fff;border:1px solid var(--ink);border-radius:8px;padding:9px 10px;flex:1;
+  }
+  .selname{font-size:12.5px;color:var(--muted);text-align:center;min-height:16px;}
+  .selname b{color:var(--ink);}
+  .ico{font-size:15px;line-height:1;}
+</style>
+</head>
+<body>
+  <header>
+    <h1>設備平面配置</h1>
+    <span class="dim" id="floorDim">450 × 350 cm</span>
+  </header>
+
+  <div class="stage">
+    <div class="frame" id="frame">
+      <div class="rulerTop">450 cm</div>
+      <div class="rulerRight">350 cm</div>
+      <div class="canvas" id="canvas"></div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="selname" id="selName">點選設備可旋轉、複製或刪除</div>
+    <div class="row">
+      <button id="btnRotate" disabled><span class="ico">⟳</span>旋轉90°</button>
+      <button id="btnDup" disabled><span class="ico">⧉</span>複製</button>
+      <button id="btnRename" disabled><span class="ico">✎</span>改名</button>
+      <button id="btnDel" class="warn" disabled><span class="ico">🗑</span>刪除</button>
+    </div>
+    <div class="row">
+      <select id="addSel">
+        <option value="">＋ 新增設備…</option>
+      </select>
+      <button id="btnSnap" class="pri"><span class="ico">⊞</span>對齊5cm</button>
+    </div>
+    <div class="row">
+      <button id="btnShare"><span class="ico">⇪</span>分享配置</button>
+      <button id="btnLoad"><span class="ico">⇩</span>載入配置</button>
+      <button id="btnReset" class="warn"><span class="ico">↺</span>全部重置</button>
+    </div>
+  </div>
+
+<script>
+(function(){
+  "use strict";
+
+  // 平面尺寸（cm）
+  const FW = 450, FH = 350;
+
+  // 設備清單（依手稿，名稱可自行改名）
+  const LIB = [
+    {key:"工作台",       w:120, h:60, c:"#E6D9B8"},
+    {key:"洗手台",       w:120, h:60, c:"#BFD6D2"},
+    {key:"冷凍冰箱",     w:75,  h:75, c:"#C9D6E5"},
+    {key:"冷藏冰箱+烤箱", w:180, h:60, c:"#D8C7DA"},
+    {key:"微波爐櫃",     w:75,  h:45, c:"#E8CBB6"},
+    {key:"爐櫃",         w:160, h:60, c:"#E6B8AE"},
+  ];
+
+  const canvas = document.getElementById("canvas");
+  const frame  = document.getElementById("frame");
+  let scale = 1;                 // px per cm
+  let items = [];                // {id,key,w,h,x,y,c,rot}
+  let selId = null;
+  let snap = true;               // 對齊 5cm
+  let nextId = 1;
+
+  // ---- 安全的本機儲存（在 Claude 預覽會自動略過、單獨開檔可用）----
+  const store = {
+    save(){ try{ localStorage.setItem("kdesk_layout", JSON.stringify(items)); }catch(e){} },
+    load(){ try{ const s=localStorage.getItem("kdesk_layout"); return s?JSON.parse(s):null; }catch(e){ return null; } }
+  };
+
+  function fit(){
+    // 依可用空間計算畫布大小，維持 450:350 比例
+    const stage = document.querySelector(".stage");
+    const availW = stage.clientWidth  - 4;
+    const availH = stage.clientHeight - 28; // 留尺標空間
+    let w = availW, h = w * FH/FW;
+    if(h > availH){ h = availH; w = h * FW/FH; }
+    scale = w / FW;
+    frame.style.width  = w + "px";
+    frame.style.height = h + "px";
+    canvas.style.width  = w + "px";
+    canvas.style.height = h + "px";
+    canvas.style.setProperty("--g",  (50*scale)+"px");   // 50cm 細格
+    canvas.style.setProperty("--g5", (100*scale)+"px");  // 100cm 粗格
+    render();
+  }
+
+  function dims(it){ return it.rot ? {w:it.h,h:it.w} : {w:it.w,h:it.h}; }
+
+  function clamp(it){
+    const d = dims(it);
+    it.x = Math.max(0, Math.min(FW - d.w, it.x));
+    it.y = Math.max(0, Math.min(FH - d.h, it.y));
+  }
+  function snapVal(v){ return snap ? Math.round(v/5)*5 : Math.round(v); }
+
+  function defaults(){
+    items = [];
+    nextId = 1;
+    let x=10, y=10, rowH=0;
+    LIB.forEach(d=>{
+      if(x + d.w > FW-10){ x=10; y+=rowH+12; rowH=0; }
+      items.push({id:nextId++, key:d.key, w:d.w, h:d.h, c:d.c, x, y, rot:0});
+      x += d.w + 12; rowH = Math.max(rowH, d.h);
+    });
+  }
+
+  function render(){
+    canvas.innerHTML = "";
+    items.forEach(it=>{
+      const d = dims(it);
+      const el = document.createElement("div");
+      el.className = "item" + (it.id===selId ? " sel":"");
+      el.style.left   = (it.x*scale)+"px";
+      el.style.top    = (it.y*scale)+"px";
+      el.style.width  = (d.w*scale)+"px";
+      el.style.height = (d.h*scale)+"px";
+      el.style.background = it.c;
+      const fs = Math.max(9, Math.min(13, d.w*scale/8));
+      el.innerHTML = `<span class="nm" style="font-size:${fs}px">${it.key}</span>`+
+                     `<span class="sz" style="font-size:${Math.max(8,fs-2)}px">${it.w}×${it.h}</span>`;
+      el.dataset.id = it.id;
+      bindDrag(el, it);
+      canvas.appendChild(el);
+    });
+    updateBar();
+  }
+
+  function bindDrag(el, it){
+    let startX, startY, originX, originY, moved=false, capId=null;
+    el.addEventListener("pointerdown", e=>{
+      e.preventDefault();
+      select(it.id);
+      moved=false;
+      startX=e.clientX; startY=e.clientY;
+      originX=it.x; originY=it.y;
+      capId=e.pointerId; el.setPointerCapture(capId);
+      el.classList.add("drag");
+    });
+    el.addEventListener("pointermove", e=>{
+      if(capId===null) return;
+      const dx=(e.clientX-startX)/scale, dy=(e.clientY-startY)/scale;
+      if(Math.abs(e.clientX-startX)>3||Math.abs(e.clientY-startY)>3) moved=true;
+      it.x = snapVal(originX+dx);
+      it.y = snapVal(originY+dy);
+      clamp(it);
+      const d=dims(it);
+      el.style.left=(it.x*scale)+"px";
+      el.style.top =(it.y*scale)+"px";
+    });
+    const up=e=>{
+      if(capId===null) return;
+      el.classList.remove("drag");
+      try{el.releasePointerCapture(capId);}catch(_){}
+      capId=null;
+      if(moved) store.save();
+    };
+    el.addEventListener("pointerup", up);
+    el.addEventListener("pointercancel", up);
+  }
+
+  function applySelection(){
+    canvas.querySelectorAll(".item").forEach(el=>{
+      el.classList.toggle("sel", Number(el.dataset.id)===selId);
+    });
+    updateBar();
+  }
+  function select(id){ selId=id; applySelection(); }
+  function getSel(){ return items.find(i=>i.id===selId); }
+
+  function updateBar(){
+    const it = getSel();
+    const has = !!it;
+    ["btnRotate","btnDup","btnRename","btnDel"].forEach(b=>document.getElementById(b).disabled=!has);
+    const sn = document.getElementById("selName");
+    sn.innerHTML = has ? `已選取：<b>${it.key}</b>　${dims(it).w}×${dims(it).h} cm`
+                       : "點選設備可旋轉、複製或刪除";
+  }
+
+  // 點空白處取消選取
+  canvas.addEventListener("pointerdown", e=>{ if(e.target===canvas){ selId=null; applySelection(); } });
+
+  // ---- 按鈕 ----
+  document.getElementById("btnRotate").onclick=()=>{
+    const it=getSel(); if(!it)return; it.rot=it.rot?0:1; clamp(it); store.save(); render();
+  };
+  document.getElementById("btnDup").onclick=()=>{
+    const it=getSel(); if(!it)return;
+    const n={...it,id:nextId++,x:snapVal(it.x+20),y:snapVal(it.y+20)}; clamp(n);
+    items.push(n); selId=n.id; store.save(); render();
+  };
+  document.getElementById("btnRename").onclick=()=>{
+    const it=getSel(); if(!it)return;
+    const v=prompt("設備名稱：", it.key); if(v&&v.trim()){ it.key=v.trim(); store.save(); render(); }
+  };
+  document.getElementById("btnDel").onclick=()=>{
+    const it=getSel(); if(!it)return;
+    items=items.filter(i=>i.id!==selId); selId=null; store.save(); render();
+  };
+  document.getElementById("btnSnap").onclick=()=>{
+    snap=!snap;
+    const b=document.getElementById("btnSnap");
+    b.classList.toggle("pri",snap);
+    b.innerHTML=`<span class="ico">⊞</span>${snap?"對齊5cm":"自由移動"}`;
+  };
+  document.getElementById("btnReset").onclick=()=>{
+    if(confirm("確定要清除目前配置並還原預設？")){ defaults(); selId=null; store.save(); render(); }
+  };
+
+  // 新增設備下拉
+  const addSel=document.getElementById("addSel");
+  LIB.forEach((d,i)=>{ const o=document.createElement("option"); o.value=i; o.textContent=`＋ ${d.key}（${d.w}×${d.h}）`; addSel.appendChild(o); });
+  addSel.onchange=()=>{
+    const i=addSel.value; if(i==="")return;
+    const d=LIB[i];
+    const n={id:nextId++,key:d.key,w:d.w,h:d.h,c:d.c,x:snapVal(20),y:snapVal(20),rot:0};
+    items.push(n); selId=n.id; store.save(); render(); addSel.value="";
+  };
+
+  // 分享 / 載入（用代碼，朋友互傳配置）
+  document.getElementById("btnShare").onclick=()=>{
+    const code=btoa(unescape(encodeURIComponent(JSON.stringify(items))));
+    const ok=()=>alert("配置代碼已複製，可貼給朋友：\n\n"+code);
+    if(navigator.clipboard){ navigator.clipboard.writeText(code).then(ok,()=>prompt("複製此代碼：",code)); }
+    else prompt("複製此代碼：",code);
+  };
+  document.getElementById("btnLoad").onclick=()=>{
+    const code=prompt("貼上配置代碼："); if(!code)return;
+    try{
+      const arr=JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
+      if(Array.isArray(arr)){ items=arr; nextId=Math.max(0,...arr.map(i=>i.id))+1; selId=null; store.save(); render(); }
+      else alert("代碼格式不正確");
+    }catch(e){ alert("代碼無法讀取，請確認是否完整複製"); }
+  };
+
+  // ---- 啟動 ----
+  const saved=store.load();
+  if(saved && saved.length){ items=saved; nextId=Math.max(0,...saved.map(i=>i.id))+1; }
+  else defaults();
+
+  window.addEventListener("resize", fit);
+  fit();
+})();
+</script>
+</body>
+</html>
